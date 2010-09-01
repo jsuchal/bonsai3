@@ -7,6 +7,7 @@ gem 'haml' # we want SCSS
 
 group :development, :test, :cucumber do
   gem "rspec-rails", ">= 2.0.0.beta.19"
+  gem 'factory_girl_rails'
 end
 
 group :cucumber do
