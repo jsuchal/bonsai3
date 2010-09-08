@@ -1,0 +1,18 @@
+<div id="toolbar">
+  <div class="actions">
+    <% if current_user.can_view?(@page) %><span class="button action history"><%= link_to "History", history_wiki_page_path(@page) %></span><% end %>
+    <% if current_user.can_edit?(@page) %><span class="button action edit"><%= link_to "Edit", edit_wiki_page_path(@page) %></span><% end %>
+  </div>
+</div>
+<% unless @page.ancestors.empty? -%>
+    <ol class="breadcrumbs">
+      <% @page.ancestors.each do |node| -%>
+          <li><%= link_to node.title, page_path(node) %></li>
+      <% end -%>
+    </ol>
+<% end -%>
+<h1><%= @page.title %></h1>
+<% @page.parts.each do |part| -%>
+    <h2><%= part.name %></h2>
+    <div><%= markdown(part.current_revision.body) %></div>
+<% end -%>

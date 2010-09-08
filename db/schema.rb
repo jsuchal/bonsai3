@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100831131015) do
+ActiveRecord::Schema.define(:version => 20100907101744) do
 
   create_table "favorites", :force => true do |t|
     t.integer "user_id", :null => false
@@ -74,20 +74,22 @@ ActiveRecord::Schema.define(:version => 20100831131015) do
   end
 
   create_table "page_part_revisions", :force => true do |t|
-    t.integer  "page_part_id",                    :null => false
-    t.integer  "user_id",                         :null => false
-    t.datetime "created_at",                      :null => false
-    t.text     "body",                            :null => false
-    t.boolean  "was_deleted",  :default => false, :null => false
+    t.integer  "part_id",                        :null => false
+    t.integer  "author_id",                      :null => false
+    t.datetime "created_at",                     :null => false
+    t.text     "body",                           :null => false
+    t.boolean  "was_deleted", :default => false, :null => false
     t.string   "summary"
+    t.integer  "number",                         :null => false
   end
 
-  add_index "page_part_revisions", ["page_part_id"], :name => "index_page_part_revisions_on_page_part_id"
+  add_index "page_part_revisions", ["part_id", "number"], :name => "index_page_part_revisions_on_part_id_and_number", :unique => true
+  add_index "page_part_revisions", ["part_id"], :name => "index_page_part_revisions_on_page_part_id"
 
   create_table "page_parts", :force => true do |t|
-    t.string  "name",                          :null => false
-    t.integer "page_id",                       :null => false
-    t.integer "current_page_part_revision_id", :null => false
+    t.string  "name",                :null => false
+    t.integer "page_id",             :null => false
+    t.integer "current_revision_id", :null => false
   end
 
   add_index "page_parts", ["page_id", "name"], :name => "index_page_parts_on_page_id_and_name"
@@ -127,7 +129,7 @@ ActiveRecord::Schema.define(:version => 20100831131015) do
   create_table "uploaded_files", :force => true do |t|
     t.string  "filename"
     t.integer "page_id"
-    t.integer "current_file_version_id", :null => false
+    t.integer "current_version_id", :null => false
   end
 
   create_table "users", :force => true do |t|

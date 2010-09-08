@@ -55,4 +55,20 @@ Bonsai3::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
+
+  namespace :wiki do
+    resources :pages do
+      member do
+        get :history, :diff
+      end
+    end
+    resources :files do
+      member do
+        get :history
+      end
+    end
+  end
+
+  root :to => "nodes#handle", :defaults => {:path => ''}
+  match "*path" => "nodes#handle"
 end

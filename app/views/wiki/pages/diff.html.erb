@@ -1,0 +1,14 @@
+<% @revision_pairs.each do |pair| -%>
+    <% first, second = pair %>
+    <p><strong>Difference between revision #<%= first.number %> (<%= first.author.name %>) and #<%= second.number %> (<%= second.author.name %>)</strong></p>
+    <% diff = first.difference_from(second) %>
+    <div class="diff">
+      <% for item in diff %>
+          <% item[1] = " " if item[1].blank? %>
+          <!--<% if (item[0] == '=')%><div><%= item[1] %></div><% end %>-->
+          <% if (item[0] == '+')%><div class="addition"><%= item[1] %></div><% end %>
+          <% if (item[0] == '-')%><div class="deletion"><%= item[1] %></div><% end %>
+          <% if (item[0] == '*')%><div class="change"><% for diff_item in item[1] %><% if (diff_item[0] == '=')%><%= diff_item[1]%><% elsif (diff_item[0] == '+')%><span class="addition"><%= diff_item[1]%></span><% elsif (diff_item[0] == '-')%><span class="deletion"><%= diff_item[1]%></span><% end %><% end %></div><% end %>
+      <% end %>
+    </div>
+<% end %>

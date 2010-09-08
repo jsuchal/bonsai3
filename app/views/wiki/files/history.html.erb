@@ -1,0 +1,19 @@
+<h1>History for file <%= @file.filename %></h1>
+<table>
+  <thead>
+  <tr>
+    <th>Uploaded at</th>
+    <th>Uploader</th>
+    <th>Size</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @versions.each do |version| %>
+      <tr>
+        <td><%= format_datetime(version.created_at) %></td>
+        <td><%= version.uploader.name %></td>
+        <td><%= number_to_human_size(version.size) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
