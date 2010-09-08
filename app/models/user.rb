@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include AbstractUser
+
   before_create :generate_unique_token
   after_create :create_private_group
 
@@ -27,5 +29,13 @@ class User < ActiveRecord::Base
 
   def create_private_group
     Group.create(:name => username, :usergroup => true).add_viewer(self)
+  end
+
+  protected
+  def viewable_page_ids
+    explicit_and_inherited = Page.select("DISTINCT pages.id").joins("JOIN pages p2 ON pages.lft >= p2.lft AND pages.rgt <= p2.rgt
+        JOIN page_permissions pp ON p2.id = pp.page_id AND (pp.can_view = 1 OR pp.can_edit = 1 OR pp.can_manage = 1)
+        JOIN group_permissions gp ON pp.group_id = gp.group_id").where(["gp.user_id = ?", id]).collect(&:id)
+    (public_page_ids + explicit_and_inherited).uniq
   end
 end

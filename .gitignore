@@ -1,8 +1,10 @@
 .idea
 .bundle
 db/*.sqlite3
-log/*.log
+log/*
 tmp/**/*
 Gemfile.lock
 public/stylesheets/*.css
+db/sphinx
+config/*.sphinx.conf
 

@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   private
   def authenticate
+    # TODO login/logout
     @current_user = User.first
   end
 

@@ -1,5 +1,5 @@
 class Wiki::PagesController < ApplicationController
-  before_filter :find_page
+  before_filter :find_page, :except => [:search, :quick_search]
 
   def history
     @revisions = @page.revisions.paginate(:page => params[:page])
@@ -11,6 +11,15 @@ class Wiki::PagesController < ApplicationController
   end
 
   def edit
+  end
+
+  def search
+    @query = params[:q]
+    @matches = current_user.search(@query).paginate(:per_page => 10)
+  end
+
+  def quick_search
+    @pages = current_user.search("#{params[:term]}*", :limit => 10).collect(&:page)
   end
 
   private

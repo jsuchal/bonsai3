@@ -4,6 +4,21 @@
         font-family: Calibri, sans-serif;
     }
 
+    /* Layout */
+    #toolbar {
+        overflow: hidden;
+        .actions { float: left; }
+        .search {
+            float: right;
+            margin: 0;
+            padding: 0;
+            p {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+
     /* Diff */
     .diff {
         font-family: monospace;
@@ -63,6 +78,38 @@
                 padding-left: 0.5em;
             }
         }
+    }
 
+    /* Search */
+    #q {
+        width: 250px;
+    }
+
+
+    /* Autocomplete */
+    .ui-autocomplete {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        background-color: white;
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        li {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            border-bottom: 1px solid #ccc;
+
+            a {
+                display: block;
+                padding: 5px 10px;
+                cursor: pointer;
+                cursor: hand;
+            }
+        }
+        .ui-state-hover {
+            background-color: #fafad2;
+        }
     }
 // }

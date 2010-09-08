@@ -61,6 +61,9 @@ Bonsai3::Application.routes.draw do
       member do
         get :history, :diff
       end
+      collection do
+        get :search, :quick_search
+      end
     end
     resources :files do
       member do

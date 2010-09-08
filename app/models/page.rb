@@ -18,6 +18,10 @@ class Page < ActiveRecord::Base
     current
   end
 
+  def to_search_result
+    {:label => title, :url => "/#{path}"}
+  end
+
   def path
     self_and_ancestors.collect(&:sid).compact.join('/')
   end

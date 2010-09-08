@@ -3,14 +3,11 @@
     <% if current_user.can_view?(@page) %><span class="button action history"><%= link_to "History", history_wiki_page_path(@page) %></span><% end %>
     <% if current_user.can_edit?(@page) %><span class="button action edit"><%= link_to "Edit", edit_wiki_page_path(@page) %></span><% end %>
   </div>
+  <% form_tag search_wiki_pages_path, :method => :get, :class => :search do -%>
+      <p><%= text_field_tag :q %><%= submit_tag "Search", :name => nil %></p>
+  <% end %>
 </div>
-<% unless @page.ancestors.empty? -%>
-    <ol class="breadcrumbs">
-      <% @page.ancestors.each do |node| -%>
-          <li><%= link_to node.title, page_path(node) %></li>
-      <% end -%>
-    </ol>
-<% end -%>
+<%= render :partial => 'breadcrumbs', :object => @page %>
 <h1><%= @page.title %></h1>
 <% @page.parts.each do |part| -%>
     <h2><%= part.name %></h2>
