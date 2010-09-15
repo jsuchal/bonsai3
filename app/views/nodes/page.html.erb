@@ -3,7 +3,7 @@
     <% if current_user.can_view?(@page) %><span class="button action history"><%= link_to "History", history_wiki_page_path(@page) %></span><% end %>
     <% if current_user.can_edit?(@page) %><span class="button action edit"><%= link_to "Edit", edit_wiki_page_path(@page) %></span><% end %>
   </div>
-  <% form_tag search_wiki_pages_path, :method => :get, :class => :search do -%>
+  <%= form_tag search_wiki_pages_path, :method => :get, :class => :search do -%>
       <p><%= text_field_tag :q %><%= submit_tag "Search", :name => nil %></p>
   <% end %>
 </div>
