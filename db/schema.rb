@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100907101744) do
+ActiveRecord::Schema.define(:version => 20100915201327) do
 
   create_table "favorites", :force => true do |t|
     t.integer "user_id", :null => false
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(:version => 20100907101744) do
     t.boolean "can_view", :default => false, :null => false
     t.boolean "can_edit", :default => false, :null => false
   end
+
+  add_index "group_permissions", ["user_id", "group_id"], :name => "index_group_permissions_on_user_id_and_group_id", :unique => true
 
   create_table "group_permissions_histories", :force => true do |t|
     t.integer  "user_id",    :null => false
