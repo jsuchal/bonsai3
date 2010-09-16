@@ -10,14 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100915205212) do
-
-  create_table "favorites", :force => true do |t|
-    t.integer "user_id", :null => false
-    t.integer "page_id", :null => false
-  end
-
-  add_index "favorites", ["user_id"], :name => "index_favorites_on_user_id"
+ActiveRecord::Schema.define(:version => 20100916205810) do
 
   create_table "file_versions", :force => true do |t|
     t.integer  "file_id",                     :null => false
@@ -128,6 +121,13 @@ ActiveRecord::Schema.define(:version => 20100915205212) do
 
   add_index "pages", ["lft", "rgt"], :name => "index_pages_on_lft_and_rgt"
   add_index "pages", ["parent_id", "sid"], :name => "index_pages_on_parent_id_and_sid"
+
+  create_table "subscriptions", :force => true do |t|
+    t.integer "user_id", :null => false
+    t.integer "page_id", :null => false
+  end
+
+  add_index "subscriptions", ["user_id"], :name => "index_favorites_on_user_id"
 
   create_table "uploaded_files", :force => true do |t|
     t.string  "filename"

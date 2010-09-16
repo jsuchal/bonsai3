@@ -24,8 +24,23 @@ class Wiki::PagesController < ApplicationController
     @matches = current_user.search("#{params[:term]}*", :limit => 5)
   end
 
+  def watch
+    current_user.watched_pages.push(@page)
+    refresh_subscription
+  end
+
+  def unwatch
+    current_user.watched_pages.delete(@page)
+    refresh_subscription
+  end
+
   private
   def find_page
     @page = Page.find_by_id(params[:id])
+  end
+
+  def refresh_subscription
+    current_user.watched_pages(true)
+    render :action => :refresh_subscription
   end
 end

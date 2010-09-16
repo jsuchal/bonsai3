@@ -6,15 +6,48 @@
 
     /* Layout */
     #toolbar {
+        -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;
+        background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FCFCFC), to(#E8E8E8));
+        border-radius: 5px;
+        border: 1px solid whiteSmoke;
+        padding: 8px;
         overflow: hidden;
+
+        text-shadow: white 1px 1px 0px;
+        color: #696969;
+
+        a {
+            color: #696969;
+        }
+
+        a:visited {
+            color: #696969;
+        }
+
         .actions { float: left; }
+        .userbox {
+           text-align: right;
+           height: 25px;
+        }
+        .divider {
+           color: lightgray;
+           margin: 0 5px;
+        }
+
         .search {
-            float: right;
-            margin: 0;
+            display: inline-block;
+            margin: 0 5px 0 2px;
             padding: 0;
             p {
                 margin: 0;
                 padding: 0;
+            }
+            #q {
+                border: 1px solid #aaa;
+                padding: 2px;
+            }
+            .submit {
+                display: none;
             }
         }
     }
@@ -34,35 +67,30 @@
     }
 
     /* Forms */
-    input[type="checkbox"] {
+    input[type="checkbox"], input[type="submit"] {
         cursor: pointer;
         cursor: hand;
     }
 
     /* Buttons */
     .button {
-        display: inline-block;
-        border: 1px solid #BBB;
-        border-bottom-color: #A0A0A0;
-        border-top-color: #CCC;
-        border-radius: 16px;
-        background-color: #ddd;
-        background-repeat: no-repeat;
-        background-position: 14px center;
-        height: 25px;
-        -webkit-box-shadow: 3px 3px 5px #ddd;
-        box-shadow: 3px 3px 5px #ddd;
-        margin-right: 10px;
-        &:hover { background-color: #efefef; }
+        margin: 0 10px;
         a {
+            background-repeat: no-repeat;
+            background-position: left center;
             line-height: 25px;
-            padding: 0 20px;
+            vertical-align: bottom;
             text-decoration: none;
-            color: black;
+            &:hover {
+                text-decoration: underline;
+            }
         }
-        &.action { padding-left: 18px; }
-        &.action.edit { background-image: url('/images/icons/edit.png') }
-        &.action.history { background-image: url('/images/icons/history.png') }
+
+        &.action a {
+            padding-left: 22px;
+        }
+        &.action.edit a { background-image: url('/images/icons/edit.png') }
+        &.action.history a { background-image: url('/images/icons/history.png') }
     }
 
     /* Breadcrumbs */
@@ -89,8 +117,9 @@
         font-weight: bold;
     }
 
-
     /* Autocomplete */
+    .ui-autocomplete-loading { background: white url('/images/indicator.gif') right center no-repeat; }
+
     .ui-autocomplete {
         margin: 0;
         padding: 0;
@@ -99,13 +128,24 @@
         border-collapse: collapse;
         border: 1px solid #ccc;
         border-bottom: none;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.299219) 0px 3px 5px;
+        background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FCFCFC), to(#E8E8E8));
+        border-radius: 5px;
+        border: 1px solid whiteSmoke;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
         li {
             margin: 0;
             padding: 0;
             list-style-type: none;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;
+            background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FCFCFC), to(#f4f4f4));
             border-bottom: 1px solid #ccc;
-
+            &:last-child {
+                border: none;
+            }
             a {
+                -webkit-transition: background-color 0.4s linear;
                 display: block;
                 padding: 5px 10px;
                 cursor: pointer;
@@ -113,7 +153,7 @@
             }
         }
         .ui-state-hover {
-            background-color: #fafad2;
+            background-color: #ffc;
         }
 
         .path {

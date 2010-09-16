@@ -1,6 +1,14 @@
 class AnonymousUser
   include AbstractUser
 
+  def logged_in?
+    false
+  end
+
+  def can_watch?
+    false
+  end
+
   def can_view?(node)
     node.is_viewable_by_everyone?
   end

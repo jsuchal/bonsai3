@@ -1,8 +1,22 @@
 class User < ActiveRecord::Base
   include AbstractUser
+  has_many :subscriptions, :dependent => :delete_all
+  has_many :watched_pages, :through => :subscriptions, :source => :page, :uniq => true
 
   before_create :generate_unique_token
   after_create :create_private_group
+
+  def logged_in?
+    true
+  end
+
+  def can_watch?
+    true
+  end
+
+  def watches?(page)
+    watched_pages.include?(page)
+  end
 
   def can_view?(node)
     node.is_viewable_by?(self)

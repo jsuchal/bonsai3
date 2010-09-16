@@ -1,0 +1,7 @@
+<span class="button" id="subscription">
+  <% if current_user.watches?(@page) -%>
+      <%= link_to icon_tag(:watched, :alt => 'Stop watching this page', :title => 'Stop watching this page'), unwatch_wiki_page_path(@page), :remote => true, :method => :put %>
+  <% else -%>
+      <%= link_to icon_tag(:unwatched, :alt => 'Start watching this page', :title => 'Start watching this page'), watch_wiki_page_path(@page), :remote => true, :method => :put %>
+  <% end -%>
+</span>
