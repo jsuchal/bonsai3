@@ -81,8 +81,12 @@
     }
 
     /* Search */
-    #q {
+    #q, .ui-autocomplete {
         width: 250px;
+    }
+
+    .match {
+        font-weight: bold;
     }
 
 
@@ -110,6 +114,14 @@
         }
         .ui-state-hover {
             background-color: #fafad2;
+        }
+
+        .path {
+            font-size: 10px;
+        }
+
+        .description {
+            font-size: 11px;
         }
     }
 // }

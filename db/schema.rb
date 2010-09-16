@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100915201327) do
+ActiveRecord::Schema.define(:version => 20100915205212) do
 
   create_table "favorites", :force => true do |t|
     t.integer "user_id", :null => false
@@ -76,13 +76,14 @@ ActiveRecord::Schema.define(:version => 20100915201327) do
   end
 
   create_table "page_part_revisions", :force => true do |t|
-    t.integer  "part_id",                        :null => false
-    t.integer  "author_id",                      :null => false
-    t.datetime "created_at",                     :null => false
-    t.text     "body",                           :null => false
-    t.boolean  "was_deleted", :default => false, :null => false
+    t.integer  "part_id",                                :null => false
+    t.integer  "author_id",                              :null => false
+    t.datetime "created_at",                             :null => false
+    t.text     "body",                                   :null => false
+    t.text     "body_without_markup",                    :null => false
+    t.boolean  "was_deleted",         :default => false, :null => false
     t.string   "summary"
-    t.integer  "number",                         :null => false
+    t.integer  "number",                                 :null => false
   end
 
   add_index "page_part_revisions", ["part_id", "number"], :name => "index_page_part_revisions_on_part_id_and_number", :unique => true

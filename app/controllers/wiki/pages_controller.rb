@@ -15,11 +15,13 @@ class Wiki::PagesController < ApplicationController
 
   def search
     @query = params[:q]
-    @matches = current_user.search(@query).paginate(:per_page => 10)
+    @matches = current_user.search(@query, :page => params[:page])
   end
 
   def quick_search
-    @pages = current_user.search("#{params[:term]}*", :limit => 10).collect(&:page)
+    @term = params[:term]
+    @phrases = params[:term].split(/ +/)
+    @matches = current_user.search("#{params[:term]}*", :limit => 5)
   end
 
   private

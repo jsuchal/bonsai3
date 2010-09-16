@@ -6,16 +6,16 @@ class PagePart < ActiveRecord::Base
   define_index do
     indexes page.title
     indexes page.sid
-    indexes current_revision.body
+    indexes current_revision.body_without_markup
     has :page_id
     where "was_deleted = 0"
-    set_property :field_weights => {:title => 5, :sid => 3, :content => 1}
+    set_property :field_weights => {:title => 5, :sid => 3, :body_without_markup => 1}
     set_property :enable_star => 1
     set_property :min_prefix_len => 2
   end
 
   def search(query, options = {})
-    options.reverse_merge!(:include => :page, :group_by => 'page_id', :group_function => :attr, :group_clause => '@relevance DESC')
+    options.reverse_merge!(:include => :page, :group_by => :page_id, :group_function => :attr, :group_clause => '@relevance DESC')
     super(query, options)
   end
 end
