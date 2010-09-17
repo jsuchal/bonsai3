@@ -30,10 +30,6 @@ class Page < ActiveRecord::Base
     current
   end
 
-  def to_search_result
-    {:label => title, :url => "/#{path}"}
-  end
-
   def path
     self_and_ancestors.collect(&:sid).compact.join('/')
   end
@@ -42,9 +38,9 @@ class Page < ActiveRecord::Base
     :page
   end
 
-  def is_viewable_by?(user)
+  def is_viewable_by?(logged_user)
     return true if is_viewable_by_everyone?
-    (all_permissions_for_user(user) & PagePermission.for_viewing).exists?
+    (all_permissions_for_user(logged_user) & PagePermission.for_viewing).exists?
   end
 
   def is_viewable_by_everyone?
@@ -52,9 +48,9 @@ class Page < ActiveRecord::Base
     !(all_permissions & PagePermission.for_viewing!).exists?
   end
 
-  def is_editable_by?(user)
+  def is_editable_by?(logged_user)
     return true if is_editable_by_everyone?
-    (all_permissions_for_user(user) & PagePermission.for_editing).exists?
+    (all_permissions_for_user(logged_user) & PagePermission.for_editing).exists?
   end
 
   def is_editable_by_everyone?
@@ -62,13 +58,13 @@ class Page < ActiveRecord::Base
     !(all_permissions & PagePermission.for_editing!).exists?
   end
 
-  def is_manageable_by?(user)
-    (all_permissions_for_user(user) & PagePermission.for_managing).exists?
+  def is_manageable_by?(logged_user)
+    (all_permissions_for_user(logged_user) & PagePermission.for_managing).exists?
   end
 
   private
-  def all_permissions_for_user(user)
-    self_and_ancestors.joins(:permissions => {:group => {:group_permissions => :user}}) & User.scoped.where(:id => user.id)
+  def all_permissions_for_user(logged_user)
+    self_and_ancestors.joins(:permissions => {:group => {:group_permissions => :user}}) & User.scoped.where(:id => logged_user.id)
   end
 
   def all_permissions
