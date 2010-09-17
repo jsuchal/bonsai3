@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100916205810) do
+ActiveRecord::Schema.define(:version => 20100917160736) do
 
   create_table "file_versions", :force => true do |t|
     t.integer  "file_id",                     :null => false
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(:version => 20100916205810) do
   create_table "uploaded_files", :force => true do |t|
     t.string  "filename"
     t.integer "page_id"
-    t.integer "current_version_id", :null => false
+    t.integer "current_version_id"
   end
 
   create_table "users", :force => true do |t|

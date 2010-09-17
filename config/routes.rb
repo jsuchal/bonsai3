@@ -66,10 +66,11 @@ Bonsai3::Application.routes.draw do
       collection do
         get :search, :quick_search
       end
-    end
-    resources :files do
-      member do
-        get :history
+
+      resources :files do
+        member do
+          get :history
+        end
       end
     end
   end

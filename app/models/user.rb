@@ -6,6 +6,10 @@ class User < ActiveRecord::Base
   before_create :generate_unique_token
   after_create :create_private_group
 
+  def full_name
+    "#{name} (#{username})"
+  end
+
   def logged_in?
     true
   end

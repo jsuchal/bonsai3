@@ -1,6 +1,4 @@
 class NodesController < ApplicationController
-  before_filter :check_for_trailing_slash
-
   def handle
     path = params[:path].split('/')
     @node = Node.find_by_path(path)
@@ -10,21 +8,18 @@ class NodesController < ApplicationController
   end
 
   def page
+    uri = request.env['REQUEST_URI']
+    redirect_to uri + '/' and return unless uri.ends_with?('/')
+
     @page = @node
+    @title = @page.self_and_ancestors.reverse.collect(&:title).join(' | ')
     render :action => :page
   end
 
   def file
     @file = @node
-    file_version = params[:version].blank? ? @file.current_version : @file.versions.find_by_version(params[:version])
-    send_data :filename => file_version.filename_with_path, :type => file_version.content_type, :disposition => :inline
-  end
-
-  private
-  def check_for_trailing_slash
-    link = request.env['REQUEST_URI']
-    if !link.ends_with?('/') && !link.include?(';')
-      redirect_to link + '/'
-    end
+    version = params[:version].blank? ? @file.current_version : @file.versions.find_by_version(params[:version])
+    filename = params[:version].blank? ? @file.filename : version.filename_with_version
+    send_file version.local_path, :filename => filename, :type => version.content_type, :disposition => 'inline'
   end
 end

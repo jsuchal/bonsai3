@@ -1,8 +1,8 @@
-<% form_tag diff_wiki_page_path(@page), :method => :get do -%>
+<%= form_tag diff_wiki_page_path(@page), :method => :get do %>
     <table>
       <thead>
       <tr>
-        <th></th>
+        <th><%= check_box_tag(nil, nil, false, :class => :toggle, :title => "Check/uncheck all") %></th>
         <th>Changed at</th>
         <th>Part</th>
         <th>Author</th>
@@ -14,11 +14,11 @@
             <td><%= check_box_tag('revisions[]', revision.number) %></td>
             <td><%= format_datetime(revision.created_at) %></td>
             <td><%= revision.part.name %></td>
-            <td><%= revision.author.name %></td>
+            <td><%= revision.author.full_name %></td>
           </tr>
       <% end %>
       </tbody>
     </table>
     <%= submit_tag 'Compare selected', :name => nil %>
     <%= will_paginate @revisions %>
-<% end -%>
+<% end %>

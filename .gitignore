@@ -7,3 +7,4 @@ public/stylesheets/*.css
 db/sphinx
 config/*.sphinx.conf
 Gemfile.lock
+uploads/*

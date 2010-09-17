@@ -1,8 +1,20 @@
 class Page < ActiveRecord::Base
   acts_as_nested_set
-    
   belongs_to :parent, :class_name => 'Page'
-  has_many :files, :class_name => 'UploadedFile'
+  has_many :files, :class_name => 'UploadedFile' do
+    def create_from_upload_and_uploader(upload, uploader)
+      file = find_or_create_by_filename(File.basename(upload.original_filename))
+      file.current_version = file.versions.create(
+              :content_type => upload.content_type,
+              :size => File.size(upload.local_path),
+              :uploader => uploader
+      )
+      FileUtils.mkdir_p(File.dirname(file.local_path))
+      FileUtils.copy(upload.local_path, file.local_path)
+      file.save
+      file
+    end
+  end
   has_many :parts, :class_name => 'PagePart'
   has_many :revisions, :through => :parts, :order => "page_part_revisions.id DESC"
   has_many :permissions, :class_name => "PagePermission"

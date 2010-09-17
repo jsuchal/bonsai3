@@ -14,4 +14,31 @@ $(document).ready(function() {
                 .append("<a>" + item.title + description + "<br><span class='path'>" + item.path + "</span></a>")
                 .appendTo(ul);
     };
+
+    // toggler checkboxes
+    $(':checkbox.toggle').click(function() {
+        $(this).parents("table").first().find(":checkbox").attr("checked", $(this).is(":checked"));
+    });
+
+    // ajax uploader
+    $("a.uploader").each(function(){
+        $(this).click(function(event) {
+            $(this).closest("form").find("input[type=file]").click();
+            event.preventDefault();
+        });
+        $(this).closest("form").find("input[type=file]").change(function() {
+            if(this.value == "") return;
+            $(this).closest("form").ajaxSubmit({dataType: 'script'});
+        });
+    });
+
+    // more on hover
+    $('.more.trigger').live('mouseover mouseout', function(event){
+        var items = $(this).find(".more");
+        if(event.type == "mouseover") {
+            items.show();
+        } else {
+            items.hide();
+        }
+    });
 });

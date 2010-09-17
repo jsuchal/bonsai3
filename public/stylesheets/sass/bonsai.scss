@@ -4,13 +4,34 @@
         font-family: Calibri, sans-serif;
     }
 
+    #bonsai-main {
+        float:left;
+    }
+
+    #bonsai-sidebar {
+        float: right;
+        width: 280px;
+    }
+
+    form.new_uploaded_file input[type="submit"] {
+       position: absolute;
+       left: -1000px;
+    }
+
+
+    .more.trigger .more {
+        display: none;
+    }
+
     /* Layout */
     #toolbar {
         -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;
         background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FCFCFC), to(#E8E8E8));
+        background: -moz-linear-gradient(270deg, #FCFCFC, #ECECEC) repeat scroll 0 0 transparent;
         border-radius: 5px;
         border: 1px solid whiteSmoke;
         padding: 8px;
+        margin-bottom: 20px;
         overflow: hidden;
 
         text-shadow: white 1px 1px 0px;
@@ -18,6 +39,9 @@
 
         a {
             color: #696969;
+            img {
+                border: none;
+            }
         }
 
         a:visited {

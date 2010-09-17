@@ -2,6 +2,7 @@
 <table>
   <thead>
   <tr>
+    <th></th>
     <th>Uploaded at</th>
     <th>Uploader</th>
     <th>Size</th>
@@ -10,10 +11,12 @@
   <tbody>
   <% @versions.each do |version| %>
       <tr>
+        <td><%= link_to "Version #{version.version}", file_path(version.file, :version => version.version) %></td>
         <td><%= format_datetime(version.created_at) %></td>
-        <td><%= version.uploader.name %></td>
+        <td><%= version.uploader.full_name %></td>
         <td><%= number_to_human_size(version.size) %></td>
       </tr>
   <% end %>
   </tbody>
 </table>
+<%= will_paginate @versions %>

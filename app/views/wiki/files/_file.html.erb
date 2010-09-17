@@ -1,0 +1,4 @@
+<%= content_tag :tr, :id => dom_id(file) do %>
+  <td><%= extension_icon_tag(file) %></td>
+  <td class="more trigger"><%= link_to truncate(file.filename, :length => 30, :omission => "&hellip;").html_safe, file_path(file), :title => file.filename %> <% if file.current_version.version > 1 %><span class="more">(<%= link_to "#{file.current_version.version} versions", history_wiki_page_file_path(file.page, file) %>)</span><% end  %></td>
+<% end %>

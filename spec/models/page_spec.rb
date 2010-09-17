@@ -82,4 +82,31 @@ describe Page do
       child.is_viewable_by?(user).should == true
     end
   end
+
+  context "when uploading files" do
+    it "should be able to create new file" do
+      page = Factory.create(:page)
+      user = Factory.create(:user)
+      upload = Object.new
+      upload.stub!(:original_filename => 'readme.txt')
+      upload.stub!(:content_type => 'text/plain')
+      upload.stub!(:local_path => File.dirname(__FILE__) + '/fixtures/uploaded.tmp')
+      file = page.files.create_from_upload_and_uploader(upload, user)
+      file.filename.should == "readme.txt"
+      file.current_version.version.should == 1
+      File.read(file.local_path).should == 'test'
+    end
+
+    it "should be able to update file with new revision " do
+      page = Factory.create(:page)
+      user = Factory.create(:user)
+      upload = Object.new
+      upload.stub!(:original_filename => 'readme.txt')
+      upload.stub!(:content_type => 'text/plain')
+      upload.stub!(:local_path => File.dirname(__FILE__) + '/fixtures/uploaded.tmp')
+      page.files.create_from_upload_and_uploader(upload, user)
+      another_file = page.files.create_from_upload_and_uploader(upload, user)
+      another_file.current_version.version.should == 2
+    end
+  end
 end

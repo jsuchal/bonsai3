@@ -2,7 +2,9 @@ class Wiki::PagesController < ApplicationController
   before_filter :find_page, :except => [:search, :quick_search]
 
   def history
-    @revisions = @page.revisions.paginate(:page => params[:page])
+    @title = "History for #{@page.title}"
+    # TODO add file changes to history?
+    @revisions = @page.revisions.includes(:part, :author).paginate(:page => params[:page])
   end
 
   def diff
@@ -11,6 +13,8 @@ class Wiki::PagesController < ApplicationController
   end
 
   def edit
+    # TODO paginate?
+    @files = @page.files.order("id DESC").limit(10)
   end
 
   def search

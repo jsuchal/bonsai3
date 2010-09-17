@@ -1,0 +1,10 @@
+<textarea>
+  var html = "<%= escape_javascript(render :partial => 'file', :object => @file) %>";
+  var existing = $("#<%= dom_id(@file) %>");
+  if(existing.length) {
+    existing.replaceWith(html);
+  } else {
+    $("#files table").prepend(html);
+  }
+  $("#<%= dom_id(@file) %>").effect('highlight', {}, 5000);
+</textarea>
