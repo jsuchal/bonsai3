@@ -4,8 +4,8 @@ development:
   reconnect: false
   database: bonsai3_development
   pool: 5
-  username: root
-  password:
+  username: bonsai
+  password: bonsai
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -17,8 +17,8 @@ test: &test
   reconnect: false
   database: bonsai3_test
   pool: 5
-  username: root
-  password:
+  username: bonsai
+  password: bonsai
   host: localhost
 
 cucumber:
