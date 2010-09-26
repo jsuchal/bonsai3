@@ -19,8 +19,10 @@ group :development, :test, :cucumber do
 end
 
 group :cucumber do
-#  gem 'cucumber-rails'
-#  gem 'cucumber'
-#  gem 'capybara'
-#  gem 'database_cleaner'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'cucumber-rails'
+  gem 'cucumber'
+  gem 'spork'
+  gem 'launchy'    # So you can do Then show me the page
 end
