@@ -3,3 +3,12 @@
 
 en:
   hello: "Hello world"
+  views:
+    toolbar:
+      user_name: "Username:"
+      password: "Password:"
+      login_button: "Log in"
+  flash_messages:
+    user_session:
+      login_successful: "You have successfully logged in!"
+      logout_successful: "Logout successful!"

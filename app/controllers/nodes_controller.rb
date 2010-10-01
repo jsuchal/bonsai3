@@ -8,7 +8,7 @@ class NodesController < ApplicationController
   end
 
   def page
-    uri = request.request_uri
+    uri = request.fullpath
     redirect_to uri + '/' and return unless uri.ends_with?('/')
 
     @page = @node

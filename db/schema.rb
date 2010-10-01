@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100917160736) do
+ActiveRecord::Schema.define(:version => 20100928230221) do
 
   create_table "file_versions", :force => true do |t|
     t.integer  "file_id",                     :null => false
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(:version => 20100917160736) do
   create_table "users", :force => true do |t|
     t.string   "username",                                             :null => false
     t.string   "name",                                                 :null => false
-    t.string   "token",                :limit => 32,                   :null => false
+    t.string   "persistence_token",    :limit => 32,                   :null => false
     t.string   "prefered_locale"
     t.datetime "last_dashboard_visit"
     t.boolean  "active",                             :default => true
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(:version => 20100917160736) do
     t.string   "email_hash"
   end
 
-  add_index "users", ["token"], :name => "index_users_on_token", :unique => true
+  add_index "users", ["persistence_token"], :name => "index_users_on_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
 end

@@ -6,4 +6,3 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 Page.create(:title => "Home")
-User.create(:username => "admin", :name => "Admin")

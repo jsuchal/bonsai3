@@ -8,6 +8,8 @@
 </head>
 <body>
 <%= render :partial => 'wiki/toolbar' %>
+<%= flash[:notice]-%>
+<%= flash[:error]-%>
 <%= yield %>
 
 </body>

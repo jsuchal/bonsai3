@@ -58,6 +58,7 @@ Bonsai3::Application.routes.draw do
 
   namespace :wiki do
     get :dashboard, :login, :logout
+  	resource :user_session
     resources :pages do
       member do
         get :history, :diff, :rss
@@ -73,8 +74,10 @@ Bonsai3::Application.routes.draw do
         end
       end
     end
-  end
+	end
 
-  root :to => "nodes#handle", :defaults => {:path => ''}
+
+
+	root :to => "nodes#handle", :defaults => {:path => ''}
   match "*path" => "nodes#handle"
 end
