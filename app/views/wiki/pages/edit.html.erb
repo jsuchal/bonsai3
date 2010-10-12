@@ -3,6 +3,7 @@
       <%= form.inputs :title, :layout, :ordering %>
       <%= form.buttons %>
   <% end %>
+  <%= select_tag :layout, options_for_select(@user_layouts, @layout.to_s) %>
 </div>
 <div id="bonsai-sidebar">
   <div id="files">
