@@ -6,6 +6,7 @@ development:
   pool: 5
   username: bonsai
   password: bonsai
+
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
