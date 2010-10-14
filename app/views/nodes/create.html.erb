@@ -1,13 +1,29 @@
 <h2>Page or file you are looking for does not exist</h2>
 What do you want to create?
 
-<%= link_to "Page", new_wiki_page_path  %>
-
-<a href="#" onclick="$('#upload_file').toggle()" title="Upload new file">File</a>
+<ul>
+  <li>
+    <a href="#" onclick="$('#new_page').toggle()" title="Create new page">Page</a>
+  </li>
+  <li>
+    <a href="#" onclick="$('#upload_file').toggle()" title="Upload new file">File</a>
+  </li>
+</ul>
+<div id="new_page" style="display:none">
+   <%= form_tag "#{wiki_pages_path}", :method => :post do %>
+         <p>
+           Názov:
+           <%= text_field_tag('page_title','')%>
+           <%= hidden_field_tag('sid', @new_node) %>
+           <%= hidden_field_tag('parent_id', @parent.id) %>
+           <%= submit_tag('Save') %>
+         </p>
+      <% end %>
+</div>
 
 <div id="upload_file" style="display:none">
 
-  <%= form_for :uploaded_file, :url => wiki_page_files_path(@page.id)  , :html => {:multipart => true} do |f| %>
+  <%= form_for :uploaded_file, :url => wiki_page_files_path(@parent.id)  , :html => {:multipart => true} do |f| %>
       <%= hidden_field_tag('uploaded_file[filename]', @new_node) %>
       <p><label>Upload file<br/><%= f.file_field :file %>
       </label><%= submit_tag "SAVE" %></p>

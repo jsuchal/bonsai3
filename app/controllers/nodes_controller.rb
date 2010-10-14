@@ -10,7 +10,7 @@ class NodesController < ApplicationController
       flash.now[:error] = 'Page or file does not exist.'
       @new_node =  @path.last
       @path.pop
-      @page = Page.find_by_path(@path)
+      @parent = Page.find_by_path(@path)
 
       render :action => :create, :controller => :page
     end

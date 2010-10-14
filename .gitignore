@@ -3,7 +3,7 @@
 db/*.sqlite3
 log/*
 tmp/**/*
-public/stylesheets/bonsai.css
+public/stylesheets/sass/*
 db/sphinx
 config/*.sphinx.conf
 Gemfile.lock
