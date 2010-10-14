@@ -1,14 +1,24 @@
 <div id="bonsai-main">
-  <%= semantic_form_for @page do |form| %>
-      <%= form.inputs :title, :layout, :ordering %>
+  <%= semantic_form_for [:wiki, @page] do |form| %>
+      <%= form.input :title %>
+			<%= form.input :ordering, :as => :select, :collection => @ordering, :include_blank => false %>
+			<%= form.input :layout, :collection => @user_layouts %>
+			<% @page.parts.each do |part| %>
+				<%= semantic_fields_for "parts[#{part.id}]", part do |f|%>
+		 			<%= f.input :name %>
+					<%= semantic_fields_for "parts[#{part.id}]", part.current_revision do |f|%>
+						<%= f.input :body %>
+					<% end %>
+				<% end %>
+			<% end %>
       <%= form.buttons %>
   <% end %>
-  <%= select_tag :layout, options_for_select(@user_layouts, @layout.to_s) %>
+
 </div>
 <div id="bonsai-sidebar">
   <div id="files">
     <h2>Files</h2>
-    <%= render :partial => 'wiki/files/list' %>
+    <%#= render :partial => 'wiki/files/list' %>
     <%= form_for UploadedFile.new, :url => wiki_page_files_path(@page), :multipart => true, :class => :uploader do |form| %>
         <p>Upload a <%= link_to "new file", nil, :class => :uploader %>.</p>
         <%= form.file_field :file %><%= form.submit %>

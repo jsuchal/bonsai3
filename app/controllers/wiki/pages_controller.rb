@@ -18,8 +18,20 @@ class Wiki::PagesController < ApplicationController
   end
   def edit
     # TODO paginate?
+		@ordering = [[t("views.page.order_by_date"), 0],[t("views.page.order_by_name"), 1]]
+
     @files = @page.files.order("id DESC").limit(10)
-  end
+	end
+
+	def update
+		@page = Page.find(params[:id])
+		@page.update_attributes(params[:page])
+		params[:parts].each do |part|
+			p "*****"+part.to_s
+		end
+
+		#redirect_to wiki_page_path(@page)
+	end
 
   def search
     @query = params[:q]
