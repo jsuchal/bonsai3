@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @title || "Bonsai Wiki" %></title>
+  <%= stylesheet_link_tag "bonsai" %>
+  <%= stylesheet_link_tag @stylesheet if @stylesheet %>
+  <%= javascript_include_tag 'jquery', 'jquery-ui', 'jquery.form', 'rails', 'application' %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+<%= render :partial => 'shared/toolbar' %>

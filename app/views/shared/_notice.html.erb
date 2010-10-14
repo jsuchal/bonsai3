@@ -1,0 +1,17 @@
+<% unless flash.empty? %>
+    <% if flash.keys.first.to_s == "error" %>
+        <div id="errorflash"><%=h flash.values.first %>
+          <div id="errorflashclose" onclick="$('#errorflash').hide()">
+            <%= icon_tag('cancel', :alt => 'hide alert')%>
+          </div>
+        </div>
+    <% else %>
+        <p id="flash" class="<%= flash.keys.first %>"><%=h flash.values.first %></p>
+        <script type="text/javascript">
+            window.setTimeout( hideFlashMsq, 5000);
+            function hideFlashMsq(){
+               $('#flash').fadeOut();
+            }
+        </script>
+    <% end %>
+<% end %>

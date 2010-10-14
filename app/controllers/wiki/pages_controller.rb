@@ -12,6 +12,9 @@ class Wiki::PagesController < ApplicationController
     @revision_pairs = revisions.enum_cons(2)
   end
 
+  def new
+
+  end
   def edit
     # TODO paginate?
     @files = @page.files.order("id DESC").limit(10)

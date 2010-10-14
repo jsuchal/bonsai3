@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title><%= @title || "Bonsai Wiki" %></title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag 'jquery', 'jquery-ui', 'jquery.form', 'rails', 'application' %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
-<%= render :partial => 'wiki/toolbar' %>
-
-<%= yield %>
-
-</body>
-</html>
+    <%= render :partial => 'shared/header' %>
+    <%= render :partial => 'shared/notice' %>
+    <%= render :partial => 'shared/breadcrumbs', :object => @page %>
+    <% cache(@page.id) do %>
+        <div class="wrapper">
+          <div class="holder">
+            <%= yield %>
+          </div>
+        </div>
+    <% end %>
+    <%= render :partial => 'shared/footer' %>

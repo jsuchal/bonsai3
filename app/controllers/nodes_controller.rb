@@ -7,7 +7,8 @@ class NodesController < ApplicationController
     # TODO check if file
 
     if @node.nil?
-      # TOD0 render action for new page
+      flash.now[:error] = 'Page or file does not exist.'
+      render :action => :create, :controller => :page
     end
   end
 
@@ -19,10 +20,11 @@ class NodesController < ApplicationController
 
   def page
     uri = request.request_uri
-    redirect_to uri + '/' and return unless uri.ends_with?('/')
+    #redirect_to uri + '/' and return unless uri.ends_with?('/')
     @page = @node
     @title = @page.self_and_ancestors.reverse.collect(&:title).join(' | ')
     layout = @page.nil? ? 'application' : @page.resolve_layout
+    @stylesheet = "#{(layout == 'application') ? nil : layout}"
     render :action => :page, :layout => layout
   end
 

@@ -60,7 +60,7 @@ Bonsai3::Application.routes.draw do
     get :dashboard, :login, :logout
     resources :pages do
       member do
-        get :history, :diff, :rss
+        get :history, :diff, :rss, :new
         put :watch, :unwatch
       end
       collection do

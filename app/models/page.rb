@@ -19,6 +19,21 @@ class Page < ActiveRecord::Base
   has_many :revisions, :through => :parts, :order => "page_part_revisions.id DESC"
   has_many :permissions, :class_name => "PagePermission"
 
+  def resolve_part part_name
+    inherited_part = (PagePartRevision.joins(:part => :page).where(:was_deleted => false).where("page_parts.current_revision_id = page_part_revisions.id") & self_and_ancestors & PagePart.scoped.where(:name => part_name)).reverse.first
+    inherited_part.try(:body)
+  end
+
+  def layout_parts
+    definition = "vendor/layouts/#{resolve_layout}/definition.yml"
+    if File.exist?(definition)
+      layout = YAML.load_file(definition)
+      unless layout.nil?
+        return layout['parts']
+      end
+    end
+  end
+
   def resolve_layout
     first_layout = Page.first(:conditions => ["(lft <= ? AND rgt >= ?) AND layout IS NOT NULL", self.lft, self.rgt], :order => "lft DESC")
     return (first_layout.nil?) ? 'default' : first_layout.layout
