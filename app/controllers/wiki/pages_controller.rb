@@ -47,7 +47,32 @@ class Wiki::PagesController < ApplicationController
   def edit
     # TODO paginate?
     @files = @page.files.order("id DESC").limit(10)
-  end
+	end
+
+	def update
+		@page = Page.includes(:parts).find(params[:id])
+
+		edited_page_parts=[]
+		params[:parts].each do |part_id, part_value|
+			page_part = @page.parts.find(part_id)
+			page_part.name = part_value[:name]
+			unless page_part.current_revision.body == part_value[:body]
+				revision = page_part.revisions.build(:author => @current_user, :body => part_value[:body], :summary => part_value[:summary])
+				page_part.current_revision = revision
+			end
+			edited_page_parts << page_part
+		end
+
+		if edited_page_parts.all?(&:valid?)
+			@page.update_attributes(params[:page])
+			edited_page_parts.all?(&:save)
+	  	flash[:notice] = t("flash_messages.pages.update.successful_update")
+			redirect_to page_path(@page.path)
+		else
+			flash[:error] = t("flash_messages.pages.update.failed_update")
+			render :action => 'edit'
+		end
+	end
 
   def search
     @query = params[:q]

@@ -84,5 +84,5 @@ Bonsai3::Application.routes.draw do
   end
 
   root :to => "nodes#handle", :defaults => {:path => ''}
-  match "*path" => "nodes#handle"
+  match "*path" => "nodes#handle", :method => :get, :as => :page
 end

@@ -17,5 +17,11 @@ class PagePart < ActiveRecord::Base
   def search(query, options = {})
     options.reverse_merge!(:include => :page, :group_by => :page_id, :group_function => :attr, :group_clause => '@relevance DESC')
     super(query, options)
-  end
+	end
+
+	def set_current_revision(revision)
+		unless revision.was_deleted?
+			self.current_revision = revision
+		end
+	end
 end

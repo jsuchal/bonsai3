@@ -7,8 +7,16 @@ en:
       user_name: "Username:"
       password: "Password:"
       login_button: "Log in"
+    page:
+      order_by_date: "Order by date"
+      order_by_name: "Order by name"
   flash_messages:
     wiki_session:
       login_successful: "You have successfully logged in!"
       logout_successful: "Logout successful!"
       login_error: "Login failed. Invalid credentials."
+    pages:
+    	update:
+    		successful_update: "Page successfully updated."
+    		failed_update: "Page could not be saved!"
+
