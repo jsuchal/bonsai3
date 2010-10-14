@@ -57,11 +57,12 @@ Bonsai3::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
 
   namespace :wiki do
-    get :dashboard, :login, :logout
-		resource :session
-    resources :pages do
+    get :dashboard, :controller => :dashboard
+
+    resource :session
+    resources :pages, :except => [:index, :destroy, :show] do
       member do
-        get :history, :diff, :rss, :new
+        get :history, :diff, :rss
         put :watch, :unwatch
       end
       collection do

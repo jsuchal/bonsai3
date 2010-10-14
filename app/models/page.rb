@@ -18,9 +18,11 @@ class Page < ActiveRecord::Base
   has_many :parts, :class_name => 'PagePart'
   has_many :revisions, :through => :parts, :order => "page_part_revisions.id DESC"
   has_many :permissions, :class_name => "PagePermission"
+  has_many :subscriptions
+  has_many :subscribers, :through => :subscriptions, :source => :user
 
   def resolve_part part_name
-    inherited_part = (PagePartRevision.joins(:part => :page).where(:was_deleted => false).where("page_parts.current_revision_id = page_part_revisions.id") & self_and_ancestors & PagePart.scoped.where(:name => part_name)).reverse.first
+    inherited_part = (PagePartRevision.scoped.joins(:part => :page).where(:was_deleted => false).where("page_parts.current_revision_id = page_part_revisions.id") & self_and_ancestors & PagePart.scoped.where(:name => part_name)).reverse.first
     inherited_part.try(:body)
   end
 

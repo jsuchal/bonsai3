@@ -9,7 +9,7 @@
   <% end %>
   <div class="userbox">
     <% if current_user.logged_in? -%>
-        <%= link_to "Dashboard", wiki_dashboard_path %> <span class="divider">|</span> <%= current_user.full_name %> <span class="divider">|</span> <%= link_to "Log out", wiki_session_path, :method => :delete %>
+        <%= link_to_unless_current "Dashboard", wiki_dashboard_path %> <span class="divider">|</span> <%= current_user.full_name %> <span class="divider">|</span> <%= link_to "Log out", wiki_session_path, :method => :delete %>
     <% else -%>
         <%= link_to_function t('views.toolbar.login_button'), "$(this).hide(); $('.loginbox').show(); $('.loginbox #username').focus();" %>
         <div class="loginbox" style="display: none;">

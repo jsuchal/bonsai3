@@ -1,0 +1,6 @@
+<% file_version = event_file_version %>
+<li><%= file_version.uploader.full_name %>
+   <strong><%= file_version.version > 1 ? "updated" : "uploaded" %></strong> file <%= link_to file_version.file.filename, file_path(file_version.file, :version => file_version.version) %>
+  <%= file_version.version > 1 ? "to <strong>version #{file_version.version}</strong>".html_safe : nil %> at <%= link_to file_version.file.page.title, page_path(file_version.file.page) %> <%= time_ago_in_words(file_version.created_at) %>
+  ago.
+</li>
