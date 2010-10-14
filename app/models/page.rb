@@ -3,10 +3,10 @@ class Page < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Page'
   has_many :files, :class_name => 'UploadedFile' do
     def create_from_upload_and_uploader(upload, uploader)
-      file = find_or_create_by_filename(File.basename(upload.original_filename))
+      file = find_or_create_by_filename(File.basename(upload['file'].filename))
       file.current_version = file.versions.create(
-              :content_type => upload.content_type,
-              :size => File.size(upload.local_path),
+              :content_type => upload['file'].content_type,
+              :size => File.size(upload['file'].local_path),
               :uploader => uploader
       )
       FileUtils.mkdir_p(File.dirname(file.local_path))

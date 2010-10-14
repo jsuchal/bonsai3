@@ -34,5 +34,4 @@ class NodesController < ApplicationController
     filename = params[:version].blank? ? @file.filename : version.filename_with_version
     send_file version.local_path, :filename => filename, :type => version.content_type, :disposition => 'inline'
   end
-
 end

@@ -3,7 +3,18 @@ What do you want to create?
 
 <%= link_to "Page", new_wiki_page_path %>
 
-<a href="#" onclick="$('#upload_file').show()" title="Upload new file">File</a>
+<a href="#" onclick="$('#upload_file').toggle()" title="Upload new file">File</a>
 
-<div id="upload_file" style="visibility:hidden">
+<div id="upload_file" style="display:none">
+  <%
+    filename =  @path.last
+    @path.pop
+    @page = Page.find_by_path(@path)
+  %>
+
+  <%= form_for UploadedFile.new, :url => new_wiki_page_file_path(@page.id)  , :html => {:multipart => true} do |f| %>
+      <%= hidden_field_tag('uploaded_file[filename]', filename) %>
+      <p><label>Upload file<br/><%= f.file_field :file %>
+      </label><%= submit_tag "SAVE" %></p>
+  <% end %>
 </div>

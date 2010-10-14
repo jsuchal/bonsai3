@@ -10,8 +10,10 @@ class Wiki::FilesController < ApplicationController
     render :nothing => true and return if params[:uploaded_file].nil?
     # TODO alert when replacing existing?
     # TODO validation?
-    @file = @page.files.create_from_upload_and_uploader(params[:uploaded_file][:file], current_user)
-    render :layout => false
+    @file = @page.files.create_from_upload_and_uploader(params[:uploaded_file], current_user)
+
+    render :layout => false if params[:uploaded_file][:filename].nil?
+    redirect_to wiki_page_path(72)
   end
 
   private
