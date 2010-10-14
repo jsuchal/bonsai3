@@ -2,4 +2,13 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  views:
+    toolbar:
+      user_name: "Username:"
+      password: "Password:"
+      login_button: "Log in"
+  flash_messages:
+    wiki_session:
+      login_successful: "You have successfully logged in!"
+      logout_successful: "Logout successful!"
+      login_error: "Login failed. Invalid credentials."

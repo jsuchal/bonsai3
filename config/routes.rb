@@ -58,6 +58,7 @@ Bonsai3::Application.routes.draw do
 
   namespace :wiki do
     get :dashboard, :login, :logout
+		resource :session
     resources :pages do
       member do
         get :history, :diff, :rss, :new

@@ -95,7 +95,7 @@ class Wiki::PagesController < ApplicationController
       directories =  Array.new
       Dir.glob("vendor/layouts/*") do |directory|
         if File::directory? directory
-          if File.exist? ("#{directory}/definition.yml")
+          if File.exist?("#{directory}/definition.yml")
             directories.push directory
           end
         end
