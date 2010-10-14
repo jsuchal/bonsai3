@@ -14,7 +14,7 @@ gem 'thinking-sphinx', '2.0.0.rc2', :require => 'thinking_sphinx'
 group :development, :test, :cucumber do
   gem 'mongrel'
   gem 'spork'
-  gem 'rspec-rails', '>= 2.0.0.beta.22'
+  gem 'rspec-rails', '>= 2.0.0'
   gem 'factory_girl_rails'
 end
 
