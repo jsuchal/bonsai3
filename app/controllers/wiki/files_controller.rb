@@ -12,8 +12,8 @@ class Wiki::FilesController < ApplicationController
     # TODO validation?
     @file = @page.files.create_from_upload_and_uploader(params[:uploaded_file], current_user)
 
-    render :layout => false if params[:uploaded_file][:filename].nil?
-    redirect_to wiki_page_path(72)
+    return render :layout => false if params[:uploaded_file][:filename].nil?
+    redirect_to "/" + @page.path + "/"
   end
 
   private
