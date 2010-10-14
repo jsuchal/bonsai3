@@ -17,7 +17,6 @@ Feature: LDAP
     When I login as "johno"
     And I follow "Log out"
     Then I should see "Logout successful!"
-    And show me the page
     And I should not see "Logged in as:"
 
   @wip
