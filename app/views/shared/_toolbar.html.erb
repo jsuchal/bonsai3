@@ -9,15 +9,16 @@
   <% end %>
   <div class="userbox">
     <% if current_user.logged_in? -%>
-      <%= link_to "Dashboard", wiki_dashboard_path %> <span class="divider">|</span> <%= current_user.full_name %> <span class="divider">|</span> <%= link_to "Log out", wiki_session_path, :method => :delete %>
+        <%= link_to "Dashboard", wiki_dashboard_path %> <span class="divider">|</span> <%= current_user.full_name %> <span class="divider">|</span> <%= link_to "Log out", wiki_session_path, :method => :delete %>
     <% else -%>
-			<div class="loginbox">
-    	<%= form_tag wiki_session_path do %>
-      	<%= label_tag :username, t("views.toolbar.user_name") %> <%= text_field_tag :username %>
-        <%= label_tag :password, t("views.toolbar.password") %> <%= password_field_tag :password %>
-        <%= submit_tag t("views.toolbar.login_button"), :class => "submit" %>
-			<% end %>
-			</div>
+        <%= link_to_function t('views.toolbar.login_button'), "$(this).hide(); $('.loginbox').show(); $('.loginbox #username').focus();" %>
+        <div class="loginbox" style="display: none;">
+          <%= form_tag wiki_session_path do %>
+              <%= label_tag :username, t("views.toolbar.user_name") %> <%= text_field_tag :username %>
+              <%= label_tag :password, t("views.toolbar.password") %> <%= password_field_tag :password %>
+              <%= submit_tag t("views.toolbar.login_button"), :class => "submit" %>
+          <% end %>
+        </div>
     <% end %> <span class="divider">|</span>
     <%= form_tag search_wiki_pages_path, :method => :get, :class => :search do -%>
         <p><%= text_field_tag :q %><%= submit_tag "Search", :name => nil, :class => :submit %></p>
