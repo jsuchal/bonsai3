@@ -1,6 +1,7 @@
 class Wiki::PagesController < ApplicationController
   before_filter :find_page, :except => [:search, :quick_search]
   before_filter :set_layouts, :only => [:edit] #TODO also for create page
+
   def history
     @title = "History for #{@page.title}"
     # TODO add file changes to history?
@@ -47,6 +48,7 @@ class Wiki::PagesController < ApplicationController
     end
 
     def set_layouts
+      # TODO refactor
       @layout = @page.layout
 
       if @layout.nil?  #vrati default alebo zdedeny layout
@@ -54,7 +56,7 @@ class Wiki::PagesController < ApplicationController
         #@parent_layout = (inherited_layout == 'default') ? nil : inherited_layout
       else
         #vrati nil alebo zdedeny layout
-        @parent_layout = @page.parent_layout
+        @parent_layout = @page.parent.resolve_layout
       end
 
       @user_layouts = []
@@ -98,16 +100,16 @@ class Wiki::PagesController < ApplicationController
           end
         end
       end
-      return directories
+      directories
     end
 
-    def get_layout_parameters(file)
-      layout = YAML.load_file("#{file}/definition.yml")
+    def get_layout_parameters(path)
+      layout = YAML.load_file("#{path}/definition.yml")
       unless layout.nil?
-        layout_value = file[(file.rindex("/")+1)..-1]
+        layout_value = path[(path.rindex("/")+1)..-1]
         parameters =[ layout_value, layout['name'], layout['parts'] ]
       end
-      return parameters
+      parameters
     end
 
     def refresh_subscription

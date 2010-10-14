@@ -35,17 +35,9 @@ class Page < ActiveRecord::Base
   end
 
   def resolve_layout
-    first_layout = Page.first(:conditions => ["(lft <= ? AND rgt >= ?) AND layout IS NOT NULL", self.lft, self.rgt], :order => "lft DESC")
-    return (first_layout.nil?) ? 'default' : first_layout.layout
+    # TODO get rid of reverse call
+    self_and_ancestors.where(["layout IS NOT NULL"]).reverse.first.try(:layout) || 'default'
   end
-
-  def parent_layout
-    unless parent.nil?
-      first_parent_layout = Page.first(:conditions => ["(lft <= ? AND rgt >= ?) AND layout IS NOT NULL", parent.lft, parent.rgt], :order => "lft DESC")
-    end
-    return (first_parent_layout.nil? ? nil : first_parent_layout.layout)
-  end
-
 
   def self.find_by_path(path)
     full_path = [nil] + path
@@ -98,7 +90,4 @@ class Page < ActiveRecord::Base
   def all_permissions
     self_and_ancestors.joins(:permissions)
   end
-
-
-
 end
