@@ -1,16 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title><%= @title || "Bonsai Wiki" %></title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag 'jquery', 'jquery-ui', 'jquery.form', 'rails', 'application' %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
-<%#= render :partial => 'wiki/toolbar' %>
-<h1>PEWE</h1>
+<%= render :partial => 'shared/header' %>
+<%#= render :partial => 'shared/notice' %>
 
-<%= yield %>
-
-</body>
-</html>
+<% cache(@page.id) do %>
+<div id="pewe-holder">
+  <div id="container">
+    <div id="caption"><%= markdown(@page.resolve_part('caption')) %></div>
+    <div id="nav"><%= markdown(@page.resolve_part('navigation')) %></div>
+    <div id="content">
+      <div id="c2">
+        <%= markdown(@page.resolve_part('body')) %>
+        <% for part in @page.parts %>
+            <% unless part.current_revision.was_deleted or @page.layout_parts.include?(part.name) %>
+                <div id="part-<%= part.name.parameterize %>">
+                  <%= markdown(part.current_revision.body) %>
+                </div>
+            <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div id="footer"><%= markdown(@page.resolve_part('footer')) %></div>
+  </div>
+</div>
+<% end %>
+<%= render :partial => 'shared/footer' %>
