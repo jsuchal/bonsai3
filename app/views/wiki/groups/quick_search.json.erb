@@ -1,0 +1,3 @@
+<%= @groups.collect do |group|
+    {:label => "#{highlight(group.name, @term)} (#{highlight(group.users.first(5).collect(&:name).join(', '), @term)})", :value => group.name}
+end.to_json.html_safe %>

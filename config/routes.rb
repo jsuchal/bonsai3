@@ -73,6 +73,12 @@ Bonsai3::Application.routes.draw do
           get :history
         end
       end
+
+      resources :page_permissions, :path => :permissions
+    end
+
+    resources :groups do
+      get :quick_search, :on => :collection
     end
   end
 

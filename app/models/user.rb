@@ -39,6 +39,14 @@ class User < ActiveRecord::Base
     Group.find_by_name_and_usergroup(username, true)
   end
 
+  def set_page_permission(page, group, role)
+    permission = page.permissions.find_or_initialize_by_group_id(group.id)
+    permission.role = role
+    permission.save
+    # TODO history
+    permission
+  end
+
   private
   def generate_unique_token
     self.token = ActiveSupport::SecureRandom.hex(16)

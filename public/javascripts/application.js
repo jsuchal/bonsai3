@@ -41,4 +41,22 @@ $(document).ready(function() {
             items.hide();
         }
     });
+
+    // autosubmit
+    $('select.autosubmit').live('change', function() {
+        $(this).closest("form").submit();
+    });
+
+    // autocomplete
+    $("input[data-autocomplete]").each(function(){
+        $(this).autocomplete({
+            source: $(this).attr('data-autocomplete'),
+            minLength: 2
+        }).data("autocomplete")._renderItem = function(ul, item) {
+        return $("<li></li>")
+                .data("item.autocomplete", item)
+                .append("<a>" + item.label + "</a>")
+                .appendTo(ul);
+        };
+    });
 });
