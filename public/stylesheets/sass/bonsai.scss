@@ -10,7 +10,7 @@
 
     #bonsai-sidebar {
         float: right;
-        width: 280px;
+        width: 340px;
     }
 
     form.new_uploaded_file input[type="submit"] {
@@ -62,11 +62,25 @@
            margin: 0 5px;
         }
 
+        .loginbox {
+        	display: inline;
+        	form {
+        		display: inline;
+        	}
+        	input {
+        		width: 100px;
+        	}
+					.submit {
+						width: 50px;
+					}
+        }
+
         .search {
             display: inline-block;
             margin: 0 5px 0 2px;
             padding: 0;
             p {
+            		display: inline;
                 margin: 0;
                 padding: 0;
             }

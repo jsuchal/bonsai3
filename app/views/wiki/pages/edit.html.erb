@@ -13,6 +13,16 @@
     <%= form_for UploadedFile.new, :url => wiki_page_files_path(@page), :multipart => true, :class => :uploader do |form| %>
         <p>Upload a <%= link_to "new file", nil, :class => :uploader %>.</p>
         <%= form.file_field :file %><%= form.submit %>
-    <% end  %>
+    <% end %>
   </div>
+  <% if current_user.can_manage?(@page) %>
+      <div id="permissions">
+        <h2>Permissions</h2>
+        <%= render :partial => 'wiki/page_permissions/list' %>
+        <h3>Add new permission</h3>
+        <%= form_for [:wiki, @page, @page.permissions.build], :remote => true do |f| %>
+            <p><%= text_field_tag "page_permission[group_names]", nil, :size => 15, 'data-autocomplete' => quick_search_wiki_groups_path %><%= f.select :role, PagePermission::ROLES %><%= f.submit "Add" %></p>
+        <% end %>
+      </div>
+  <% end %>
 </div>

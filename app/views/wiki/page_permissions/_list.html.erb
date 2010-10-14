@@ -1,0 +1,7 @@
+<div class="list">
+  <% @page.permissions.each do |permission| %>
+      <%= form_for [:wiki, @page, permission], :remote => true do |f| %>
+          <%= content_tag :p, :id => dom_id(permission) do %><%= permission.group.name %> <%= f.select :role, PagePermission::ROLES, {}, :class => :autosubmit %> <%= link_to icon_tag('delete', :alt => "Remove permission"), [:wiki, @page, permission], :method => :delete, :remote => true %><% end %>
+      <% end %>
+  <% end %>
+</div>
