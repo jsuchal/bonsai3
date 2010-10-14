@@ -7,7 +7,7 @@ class NodesController < ApplicationController
     # TODO check if file
 
     if @node.nil?
-      # TOD0 render action for new page
+      # TOD0 render action for new node
     end
   end
 
@@ -18,12 +18,11 @@ class NodesController < ApplicationController
   end
 
   def page
-    uri = request.request_uri
+    uri = request.env['REQUEST_PATH']
     redirect_to uri + '/' and return unless uri.ends_with?('/')
     @page = @node
     @title = @page.self_and_ancestors.reverse.collect(&:title).join(' | ')
-    layout = @page.nil? ? 'application' : @page.resolve_layout
-    render :action => :page, :layout => layout
+    render :action => :page, :layout => @page.resolve_layout
   end
 
   def file
