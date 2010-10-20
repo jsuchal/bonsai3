@@ -19,9 +19,7 @@ class PagePart < ActiveRecord::Base
     super(query, options)
 	end
 
-	def set_current_revision(revision)
-		unless revision.was_deleted?
-			self.current_revision = revision
-		end
-	end
+  def set_current_revision(revision)
+    self.current_revision = revision
+  end
 end

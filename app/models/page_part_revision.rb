@@ -18,7 +18,7 @@ class PagePartRevision < ActiveRecord::Base
     end
 	end
 
-	def set_revision_number
-		self.number = self.part.revisions.count + 1
-	end
+  def set_revision_number
+    self.number = self.part.revisions.count + 1
+  end
 end
