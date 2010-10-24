@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   include AbstractUser
   has_many :subscriptions, :dependent => :delete_all
   has_many :watched_pages, :through => :subscriptions, :source => :page, :uniq => true
+  has_many :page_part_locks
 
   before_create :generate_unique_token
   after_create :create_private_group

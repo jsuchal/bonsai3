@@ -4,6 +4,10 @@ defaults: &defaults
     host: ldap.stuba.sk
     base_dn: ou=People,dc=stuba,dc=sk
 
+  parallel_edit:
+    saving_time: 5
+    lock_timeout: 30
+
 development:
   <<: *defaults
 

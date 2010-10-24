@@ -56,13 +56,18 @@ Bonsai3::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
 
+
   namespace :wiki do
     get :dashboard, :controller => :dashboard
+
+    get :update_lock, :controller => :pages, :action => :update_lock
+    get :add_lock, :controller => :pages, :action => :add_lock
+
 
     resource :session
     resources :pages, :except => [:index, :destroy, :show] do
       member do
-        get :history, :diff, :rss
+        get :history, :diff, :rss, :add_lock
         put :watch, :unwatch
       end
       collection do

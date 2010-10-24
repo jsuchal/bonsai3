@@ -1,5 +1,5 @@
 class Wiki::PagesController < ApplicationController
-  before_filter :find_page, :except => [:search, :quick_search]
+  before_filter :find_page, :except => [:search, :quick_search, :add_lock, :update_lock]
   before_filter :set_layouts, :only => [:edit] #TODO also for create page
 
   def history
@@ -51,11 +51,18 @@ class Wiki::PagesController < ApplicationController
 
 	def update
 		@page = Page.includes(:parts).find(params[:id])
-
+        @num_of_new_revisions = 0
 		edited_page_parts=[]
 		params[:parts].each do |part_id, part_value|
+            PagePartLock.delete_lock(part_id, @current_user)
 			page_part = @page.parts.find(part_id)
 			page_part.name = part_value[:name]
+
+            newest_revisions = page_part.revisions.where(["part_id = ?", part_id]).first
+            if (newest_revisions.id > part_value[:current_revision_id].to_i)
+              @num_of_new_revisions += 1
+            end
+
 			unless page_part.current_revision.body == part_value[:body]
 				revision = page_part.revisions.build(:author => @current_user, :body => part_value[:body], :summary => part_value[:summary])
 				page_part.current_revision = revision
@@ -66,7 +73,13 @@ class Wiki::PagesController < ApplicationController
 		if edited_page_parts.all?(&:valid?)
 			@page.update_attributes(params[:page])
 			edited_page_parts.all?(&:save)
-	  	    flash[:notice] = t("flash_messages.pages.update.successful_update")
+
+            if @num_of_new_revisions > 0 then
+              flash[:notice] = t("flash_messages.pages.update.page_updated_with_new_revisions")
+            else
+              flash[:notice] = t("flash_messages.pages.update.successfull_update")
+            end
+
 			redirect_to page_path(@page.path)
 		else
 			flash[:error] = t("flash_messages.pages.update.failed_update")
@@ -93,6 +106,21 @@ class Wiki::PagesController < ApplicationController
   def unwatch
     current_user.watched_pages.delete(@page)
     refresh_subscription
+  end
+
+  def add_lock
+    @add_part_id = params[:part_id]
+
+    @add_part_name = PagePart.find(@add_part_id).name
+    @editedbyanother = PagePartLock.check_lock?(@add_part_id, @current_user)
+    unless @editedbyanother then
+      PagePartLock.create_lock(@add_part_id, @current_user)
+    end
+  end
+
+  def update_lock
+    @updated_part_id = 478 #params[:part_id]
+    PagePartLock.create_lock(@updated_part_id, @current_user)
   end
 
   private
