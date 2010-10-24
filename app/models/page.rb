@@ -40,7 +40,7 @@ class Page < ActiveRecord::Base
 
   def resolve_layout
     # TODO get rid of reverse call
-    self_and_ancestors.where(["layout IS NOT NULL"]).reverse.first.try(:layout) || 'default'
+    self_and_ancestors.where(["layout IS NOT NULL and layout <> ''"]).reverse.first.try(:layout) || 'default'
   end
 
   def self.find_by_path(path)
@@ -84,6 +84,14 @@ class Page < ActiveRecord::Base
 
   def is_manageable_by?(logged_user)
     (all_permissions_for_user(logged_user) & PagePermission.for_managing).exists?
+  end
+
+  def add_manager group
+    permission = PagePermission.find_or_initialize_by_page_id_and_group_id(:page_id => self.id, :group_id => group.id)
+    permission.can_view = true #unless self.viewer_groups.empty?
+    permission.can_edit = true #unless self.editor_groups.empty?
+    permission.can_manage = true
+    permission.save!
   end
 
   private

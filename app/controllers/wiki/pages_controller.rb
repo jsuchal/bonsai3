@@ -23,7 +23,7 @@ class Wiki::PagesController < ApplicationController
       return render :action => :create, :controller => :node
     end
     page.save!
-    # TODO add manager
+    page.add_manager @current_user.private_group
     page_part = page.parts.create(:name => "body", :current_revision_id => 0)
 
     first_revision = page_part.revisions.create(:author => @current_user, :body => '',:number => 1)
@@ -66,7 +66,7 @@ class Wiki::PagesController < ApplicationController
 		if edited_page_parts.all?(&:valid?)
 			@page.update_attributes(params[:page])
 			edited_page_parts.all?(&:save)
-	  	flash[:notice] = t("flash_messages.pages.update.successful_update")
+	  	    flash[:notice] = t("flash_messages.pages.update.successful_update")
 			redirect_to page_path(@page.path)
 		else
 			flash[:error] = t("flash_messages.pages.update.failed_update")
