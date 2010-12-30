@@ -2,6 +2,14 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  nodes:
+    create:
+      title: "Page or file you are looking for does not exist"
+      choose_type: "What do you want to create?"
+      page: "Page"
+      create_page: "Create Page"
+      file: "File"
+      upload_file: "Upload File"
   views:
     toolbar:
       user_name: "Username:"
@@ -23,4 +31,7 @@ en:
   js:
     parallel_edit:
       is_edited: "Page is currently edited by another user!"
-
+  activerecord:
+    attributes:
+      page:
+        title: "Title"

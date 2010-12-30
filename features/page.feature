@@ -4,6 +4,16 @@ Feature: Wiki pages
   Should be able to create and manage wiki pages
 
   Scenario: User visits a fresh wiki
-    puts request.env
     When I go to the home page
     Then I should see "Home"
+
+  Scenario: Logged user visits creates page
+    Given I login as "johno"
+    When I go to "the test page"
+    Then I should see "Page or file you are looking for does not exist"
+    And I follow "Page"
+    And I fill in "Title" with "Test page"
+    And I press "Create Page"
+    Then I should see "Page was successfully created. You can set up additional details"
+    And I go to "the test page"
+    And I should see "Test page"

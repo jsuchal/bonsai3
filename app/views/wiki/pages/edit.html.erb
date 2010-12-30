@@ -51,7 +51,7 @@
   <%= semantic_form_for [:wiki, @page] do |form| %>
       <%= form.input :title %>
 			<%= form.input :ordering, :as => :select, :collection => ordering_options_select_values, :include_blank => false %>
-			<%= form.input :layout, :collection => @user_layouts %>
+			<%= form.input :layout, :collection => @user_layouts, :include_blank => false, :selected => @page.layout.to_s %>
 			<% @page.parts.each do |part| %>
 				<%= semantic_fields_for "parts[#{part.id}]", part do |f|%>
 		 			<%= f.input :name %>

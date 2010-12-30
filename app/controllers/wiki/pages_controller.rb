@@ -15,7 +15,7 @@ class Wiki::PagesController < ApplicationController
 
   def create
     # TODO check permission
-    page = Page.new(:title => params[:page_title], :parent_id => params[:parent_id], :sid => params[:sid])
+    page = Page.new(:title => params[:page][:title], :parent_id => params[:page][:parent_id], :sid => params[:page][:sid])
     unless (page.valid?)
       error_message = ""
       page.errors.each_full { |msg| error_message << msg }
