@@ -2,6 +2,11 @@ class Wiki::PagesController < ApplicationController
   before_filter :find_page, :except => [:search, :quick_search, :add_lock, :update_lock]
   before_filter :set_layouts, :only => [:edit] #TODO also for create page
 
+  def rss
+    @revisions = @page.revisions.includes(:part, :author)
+  end
+
+
   def history
     @title = "History for #{@page.title}"
     # TODO add file changes to history?
