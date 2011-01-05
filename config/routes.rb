@@ -67,7 +67,7 @@ Bonsai3::Application.routes.draw do
     resource :session
     resources :pages, :except => [:index, :destroy, :show] do
       member do
-        get :history, :diff, :rss, :add_lock
+        get :history, :diff, :rss, :rss_tree, :add_lock
         put :watch, :unwatch
       end
       collection do

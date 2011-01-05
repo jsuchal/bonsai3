@@ -86,6 +86,20 @@ class Page < ActiveRecord::Base
     (all_permissions_for_user(logged_user) & PagePermission.for_managing).exists?
   end
 
+  def add_viewer group
+    #if self.viewer_groups.empty?
+     # self.page_permissions.each do |permission|
+      #  if (permission.can_edit == true || permission.can_manage == true)
+       #   permission.can_view = true
+       # end
+        #permission.save
+      #end
+    #end
+    permission = PagePermission.find_or_initialize_by_page_id_and_group_id(:page_id => self.id, :group_id => group.id)
+    permission.can_view = true
+    permission.save!
+  end
+
   def add_manager group
     permission = PagePermission.find_or_initialize_by_page_id_and_group_id(:page_id => self.id, :group_id => group.id)
     permission.can_view = true #unless self.viewer_groups.empty?
@@ -93,6 +107,7 @@ class Page < ActiveRecord::Base
     permission.can_manage = true
     permission.save!
   end
+
 
   private
   def all_permissions_for_user(logged_user)

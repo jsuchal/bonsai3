@@ -4,7 +4,8 @@
         <% if current_user.can_watch? %><%= render :partial => 'wiki/subscription' %><% end %>
         <% if current_user.can_edit?(@page) %><span class="button action edit"><%= link_to "Edit", edit_wiki_page_path(@page) %></span><% end %>
         <span class="button action history"><%= link_to "History", history_wiki_page_path(@page) %></span>
-        <span class="button"><%= link_to icon_tag(:rss, :alt => "RSS", :title => "RSS feed"), rss_wiki_page_path(@page) %></span>
+        <span class="button"><%= link_to icon_tag(:rss, :alt => "RSS feed"), rss_wiki_page_path(@page), :title=> "RSS feed" %></span>
+        <span class="button"><%= link_to icon_tag(:rss_tree, :alt => "RSS subtree feed"), rss_tree_wiki_page_path(@page), :title=> "RSS subtree feed" %></span>
       </div>
   <% end %>
   <div class="userbox">
