@@ -20,6 +20,9 @@ class Page < ActiveRecord::Base
   has_many :parts, :class_name => 'PagePart'
   has_many :revisions, :through => :parts, :order => "page_part_revisions.id DESC"
   has_many :permissions, :class_name => "PagePermission"
+  has_many :viewer_groups, :through => :permissions, :class_name => 'Group', :source => :group, :conditions => ['page_permissions.can_view = ?', true]
+  has_many :editor_groups, :through => :permissions, :class_name => 'Group', :source => :group, :conditions => ['page_permissions.can_edit = ?', true]
+
   has_many :subscriptions
   has_many :subscribers, :through => :subscriptions, :source => :user
 
@@ -102,8 +105,8 @@ class Page < ActiveRecord::Base
 
   def add_manager group
     permission = PagePermission.find_or_initialize_by_page_id_and_group_id(:page_id => self.id, :group_id => group.id)
-    permission.can_view = true #unless self.viewer_groups.empty?
-    permission.can_edit = true #unless self.editor_groups.empty?
+    permission.can_view = true unless self.viewer_groups.empty?
+    permission.can_edit = true unless self.editor_groups.empty?
     permission.can_manage = true
     permission.save!
   end

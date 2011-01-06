@@ -6,6 +6,17 @@ class Wiki::PagesController < ApplicationController
     @revisions = @page.revisions.includes(:part, :author)
   end
 
+  def rss_tree
+    ids = @current_user.viewable_page_ids
+    @revisions= Page.select("ppr.created_at, ppr.summary, ppr.number, u.name as author_full_name,
+                             u.username as author_username, pages.id as pg_id, pages.title as pg_name,
+                             pages.sid as pg_path, pp.name as pg_part_name").joins(
+                             "JOIN page_parts pp ON pages.id = pp.page_id
+                              JOIN page_part_revisions ppr on pp.id = ppr.part_id
+                              JOIN users u on ppr.author_id = u.id").where(
+                              ["pages.lft>=? AND pages.rgt <= ? and pages.id in (?)",@page.lft, @page.rgt, ids]).order("ppr.id")
+  end
+
 
   def history
     @title = "History for #{@page.title}"

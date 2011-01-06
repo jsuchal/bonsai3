@@ -21,7 +21,7 @@ class AnonymousUser
     false
   end
 
-  protected
+  #protected
   def viewable_page_ids
     public_page_ids
   end
