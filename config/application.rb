@@ -42,5 +42,10 @@ module Bonsai3
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
+      r301 %r{^([^\?]+[^/])([\?].*)?$}, '$1/', :if => Proc.new { |rack_env| rack_env['REQUEST_METHOD'].downcase == 'get' }
+    end
+
   end
 end

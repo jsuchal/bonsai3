@@ -13,6 +13,7 @@ gem 'thinking-sphinx', '2.0.0.rc2', :require => 'thinking_sphinx'
 gem 'ruby-net-ldap'
 gem 'settingslogic'
 gem 'kramdown'
+gem 'rack-rewrite', '~> 1.0.0'
 
 group :development, :test, :cucumber do
   gem 'mongrel'

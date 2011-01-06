@@ -12,7 +12,7 @@ class NodesController < ApplicationController
       @path.pop
       @parent = Page.find_by_path(@path)
 
-      render :action => :create, :controller => :page
+      render :controller => :page, :action => :create
     end
   end
 
@@ -23,8 +23,6 @@ class NodesController < ApplicationController
   end
 
   def page
-    uri = request.request_uri
-    #redirect_to uri + '/' and return unless uri.ends_with?('/')
     @page = @node
     @title = @page.self_and_ancestors.reverse.collect(&:title).join(' | ')
     layout = @page.nil? ? 'application' : @page.resolve_layout
