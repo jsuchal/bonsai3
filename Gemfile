@@ -12,6 +12,7 @@ gem 'will_paginate', '~> 3.0.pre2'
 gem 'thinking-sphinx', '2.0.0.rc2', :require => 'thinking_sphinx'
 gem 'ruby-net-ldap'
 gem 'settingslogic'
+gem 'kramdown'
 
 group :development, :test, :cucumber do
   gem 'mongrel'
