@@ -29,6 +29,7 @@ Feature: Wiki
     And I follow "RSS feed"
     Then I should see "Some NEW title changes"
 
+  @wip
   Scenario: check if user who has not permission can not see RSS
     Given user "johno" exists
     And user "matell" exists

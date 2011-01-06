@@ -150,10 +150,9 @@ class Wiki::PagesController < ApplicationController
 
       if @layout.nil?  #vrati default alebo zdedeny layout
         @parent_layout = @page.resolve_layout
-        #@parent_layout = (inherited_layout == 'default') ? nil : inherited_layout
       else
         #vrati nil alebo zdedeny layout
-        @parent_layout = @page.parent.resolve_layout
+        @parent_layout = @page.parent ? @page.parent.resolve_layout : nil
       end
 
       @user_layouts = []

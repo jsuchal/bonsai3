@@ -17,3 +17,9 @@ Feature: Wiki pages
     Then I should see "Page was successfully created. You can set up additional details"
     And I go to "the test page"
     And I should see "Test page"
+
+  Scenario: Logged user edit homepage
+    Given I login as "johno"
+    When I go to "the home page"
+    And I follow "Edit"
+    Then I should see "Title"
