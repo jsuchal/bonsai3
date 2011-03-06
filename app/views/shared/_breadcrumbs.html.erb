@@ -1,7 +1,8 @@
-<% unless breadcrumbs.ancestors.count.zero? -%>
+<% if breadcrumbs.ancestors.any? -%>
     <ol class="breadcrumbs">
       <% breadcrumbs.ancestors.each do |node| -%>
-          <li><%= link_to node.title, page_path(node) %></li>
+          <li><%= link_to node.title, page_path(node.path) %></li>
       <% end -%>
+      <li><%= breadcrumbs.title %></li>
     </ol>
 <% end -%>
