@@ -1,0 +1,2 @@
+name: Rubydoc Layout
+parts: [body, right-navigation, footer]

@@ -1,0 +1,23 @@
+<%= render :partial => 'shared/header' %>
+<%#= render :partial => 'shared/notice' %>
+<%= render :partial => 'shared/breadcrumbs', :object => @page %>
+
+<% cache(@page.id) do %>
+<div id="ruby-holder">
+
+    <div id="right-navigation"><%= markdown(@page.resolve_part('right-navigation')) %></div>
+    <div id="content">
+        <%= markdown(@page.resolve_part('body')) %>
+        <% for part in @page.parts %>
+            <% unless part.current_revision.was_deleted or @page.layout_parts.include?(part.name) %>
+                <div id="part-<%= part.name.parameterize %>">
+                  <%= markdown(part.current_revision.body) %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+    <div id="footer"><%= markdown(@page.resolve_part('footer')) %></div>
+
+</div>
+<% end %>
+<%= render :partial => 'shared/footer' %>
