@@ -10,17 +10,17 @@ Feature: Wiki favourites
     When I create "/watched" page with title "my page"
     And I follow "Dashboard"
     Then I should not see "my page"
-  @wip
+
   Scenario: User adds and remove page from/to favorites
     When I create "/watched" page with title "my watched page"
     And I follow "favorite"
     And I follow "Dashboard"
     Then I should see "my watched page"
-    When I go to "/watched"
+    When I go to the watched page
     And I follow "favorite"
     And I follow "Dashboard"
     Then I should not see "my watched page"
-  @wip
+
   Scenario: User adds and multiple pages to favorites
     When I create "/watched" page with title "my watched page"
     And I follow "favorite"
@@ -29,7 +29,7 @@ Feature: Wiki favourites
     And I follow "Dashboard"
     Then I should see "my watched page"
     And I should see "my nested watched page"
-  @wip
+
   Scenario: User visit dashboard and click on page link
     When I create "/watched" page with title "my watched page"
     And I follow "favorite"

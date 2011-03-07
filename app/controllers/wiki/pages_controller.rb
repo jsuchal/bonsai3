@@ -210,6 +210,10 @@ class Wiki::PagesController < ApplicationController
 
     def refresh_subscription
       current_user.watched_pages(true)
-      render :action => :refresh_subscription
+      if request.xhr?
+        render :action => :refresh_subscription
+      else
+        redirect_to page_path(@page.path)
+      end          
     end
 end

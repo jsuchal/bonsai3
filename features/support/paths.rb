@@ -14,6 +14,9 @@ module NavigationHelpers
     when /the test page/
       '/test'
 
+    when /the watched page/
+      '/watched'    
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
