@@ -43,8 +43,10 @@ module Bonsai3
       g.test_framework :rspec
     end
 
-    config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
-      r301 %r{^([^\?]+[^/])([\?].*)?$}, '$1/', :if => Proc.new { |rack_env| rack_env['REQUEST_METHOD'].downcase == 'get' }
+    config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do |rack,ebv|
+      r301 %r{^([^\?]+[^/])([\?].*)?$}, "$1/", :if => Proc.new { |rack_env|
+        ((rack_env['REQUEST_METHOD'].downcase == 'get')&&(rack_env['QUERY_STRING']==""))
+      }
     end
 
   end
