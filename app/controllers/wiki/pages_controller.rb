@@ -11,10 +11,10 @@ class Wiki::PagesController < ApplicationController
     @revisions= Page.select("ppr.created_at, ppr.summary, ppr.number, u.name as author_full_name,
                              u.username as author_username, pages.id as pg_id, pages.title as pg_name,
                              pages.sid as pg_path, pp.name as pg_part_name").joins(
-                             "JOIN page_parts pp ON pages.id = pp.page_id
+        "JOIN page_parts pp ON pages.id = pp.page_id
                               JOIN page_part_revisions ppr on pp.id = ppr.part_id
                               JOIN users u on ppr.author_id = u.id").where(
-                              ["pages.lft>=? AND pages.rgt <= ? and pages.id in (?)",@page.lft, @page.rgt, ids]).order("ppr.id")
+        ["pages.lft>=? AND pages.rgt <= ? and pages.id in (?)", @page.lft, @page.rgt, ids]).order("ppr.id")
   end
 
 
@@ -42,7 +42,8 @@ class Wiki::PagesController < ApplicationController
     page.add_manager @current_user.private_group
     page_part = page.parts.create(:name => "body", :current_revision_id => 0)
 
-    first_revision = page_part.revisions.create(:author => @current_user, :body => '',:number => 1)
+    first_revision = page_part.revisions.create(:author => @current_user, :body => '', :number => 1)
+    page_part.current_revision = first_revision
     unless (first_revision.valid?)
       error_message = ""
       first_revision.errors.each_full { |msg| error_message << msg }
@@ -63,45 +64,54 @@ class Wiki::PagesController < ApplicationController
   def edit
     # TODO paginate?
     @files = @page.files.order("id DESC").limit(10)
-	end
+    @new_part = PagePart.new
+  end
 
-	def update
-		@page = Page.includes(:parts).find(params[:id])
-        @num_of_new_revisions = 0
-		edited_page_parts=[]
-		params[:parts].each do |part_id, part_value|
-            PagePartLock.delete_lock(part_id, @current_user)
-			page_part = @page.parts.find(part_id)
-			page_part.name = part_value[:name]
+  def update
+    @page = Page.includes(:parts).find(params[:id])
+    @num_of_new_revisions = 0
+    edited_page_parts=[]
+    params[:parts].each do |part_id, part_value|
+      PagePartLock.delete_lock(part_id, @current_user)
+      page_part = @page.parts.find(part_id)
+      page_part.name = part_value[:name]
 
-            newest_revisions = page_part.revisions.where(["part_id = ?", part_id]).first
-            if (newest_revisions.id > part_value[:current_revision_id].to_i)
-              @num_of_new_revisions += 1
-            end
+      newest_revisions = page_part.revisions.where(["part_id = ?", part_id]).first
+      if (newest_revisions.id > part_value[:current_revision_id].to_i)
+        @num_of_new_revisions += 1
+      end
 
-			unless page_part.current_revision.body == part_value[:body]
-				revision = page_part.revisions.build(:author => @current_user, :body => part_value[:body], :summary => part_value[:summary])
-				page_part.current_revision = revision
-			end
-			edited_page_parts << page_part
-		end
+      unless page_part.current_revision.body == part_value[:body]
+        revision = page_part.revisions.build(:author => @current_user, :body => part_value[:body], :summary => part_value[:summary])
+        page_part.current_revision = revision
+      end
+      edited_page_parts << page_part
+    end
 
-		if edited_page_parts.all?(&:valid?)
-			@page.update_attributes(params[:page])
-			edited_page_parts.all?(&:save)
+    new_page_part = @page.parts.new(params[:new_part])
+    new_page_part.current_revision_id = 0
 
-            if @num_of_new_revisions > 0 then
-              flash[:notice] = t("flash_messages.pages.update.page_updated_with_new_revisions")
-            else
-              flash[:notice] = t("flash_messages.pages.update.successfull_update")
-            end
+    if (edited_page_parts.all?(&:valid?) and params[:new_part].empty?) or (edited_page_parts.all?(&:valid?) and new_page_part.valid?)
+      new_page_part.save
+      new_revision = new_page_part.revisions.create(:author => @current_user, :body => new_page_part.new_body, :number => 1)
+      new_page_part.current_revision = new_revision
+      new_page_part.save
 
-			redirect_to page_path(@page.path)
-		else
-			flash[:error] = t("flash_messages.pages.update.failed_update")
-			render :action => 'edit'
-		end
-	end
+      @page.update_attributes(params[:page])
+      edited_page_parts.all?(&:save)
+
+      if @num_of_new_revisions > 0 then
+        flash[:notice] = t("flash_messages.pages.update.page_updated_with_new_revisions")
+      else
+        flash[:notice] = t("flash_messages.pages.update.successfull_update")
+      end
+
+      redirect_to page_path(@page.path)
+    else
+      flash[:error] = t("flash_messages.pages.update.failed_update")
+      render :action => 'edit'
+    end
+  end
 
   def search
     @query = params[:q]
@@ -140,80 +150,80 @@ class Wiki::PagesController < ApplicationController
   end
 
   private
-    def find_page
-      @page = Page.find_by_id(params[:id])
+  def find_page
+    @page = Page.find_by_id(params[:id])
+  end
+
+  def set_layouts
+    # TODO refactor
+    @layout = @page.layout
+
+    if @layout.nil? #vrati default alebo zdedeny layout
+      @parent_layout = @page.resolve_layout
+    else
+      #vrati nil alebo zdedeny layout
+      @parent_layout = @page.parent ? @page.parent.resolve_layout : nil
     end
 
-    def set_layouts
-      # TODO refactor
-      @layout = @page.layout
+    @user_layouts = []
 
-      if @layout.nil?  #vrati default alebo zdedeny layout
-        @parent_layout = @page.resolve_layout
-      else
-        #vrati nil alebo zdedeny layout
-        @parent_layout = @page.parent ? @page.parent.resolve_layout : nil
-      end
+    #layout directories
+    @definition = get_layout_definitions
 
-      @user_layouts = []
+    #basic layout settings
+    if (@definition.length == 0)
+      @user_layouts.push(['Inherit', nil]) #default layout
+    else
+      for file in @definition
+        params = get_layout_parameters(file)
 
-      #layout directories
-      @definition = get_layout_definitions
-
-      #basic layout settings
-      if (@definition.length == 0)
-         @user_layouts.push(['Inherit', nil]) #default layout
-      else
-        for file in @definition
-          params = get_layout_parameters(file)
-
-          #zobrazenie ze chcem zdedit layout od parenta
-          if params[0] == 'default' and @parent_layout.nil? and not @page.parent.nil?
-              option_text = 'Inherited (' + params[1] + ')'
-              option_value = nil
+        #zobrazenie ze chcem zdedit layout od parenta
+        if params[0] == 'default' and @parent_layout.nil? and not @page.parent.nil?
+          option_text = 'Inherited (' + params[1] + ')'
+          option_value = nil
+        else
+          #nulta uroven
+          if (params[0] == @parent_layout and not @parent_layout.nil?)
+            option_text = 'Inherited (' + params[1] + ')'
+            option_value = nil
           else
-            #nulta uroven
-            if (params[0] == @parent_layout and not @parent_layout.nil?)
-              option_text = 'Inherited (' + params[1] + ')'
-              option_value = nil
-            else
-              option_text = params[1]
-              option_value = params[0]
-            end
+            option_text = params[1]
+            option_value = params[0]
           end
+        end
 
-          @user_layouts.push([option_text, option_value])
+        @user_layouts.push([option_text, option_value])
+      end
+    end
+  end
+
+  def get_layout_definitions
+    directories = Array.new
+    Dir.glob("vendor/layouts/*") do |directory|
+      if File::directory? directory
+        if File.exist?("#{directory}/definition.yml")
+          directories.push directory
         end
       end
     end
+    directories
+  end
 
-    def get_layout_definitions
-      directories =  Array.new
-      Dir.glob("vendor/layouts/*") do |directory|
-        if File::directory? directory
-          if File.exist?("#{directory}/definition.yml")
-            directories.push directory
-          end
-        end
-      end
-      directories
+  def get_layout_parameters(path)
+    layout = YAML.load_file("#{path}/definition.yml")
+    unless layout.nil?
+      layout_value = path[(path.rindex("/")+1)..-1]
+      parameters =[layout_value, layout['name'], layout['parts']]
     end
+    parameters
+  end
 
-    def get_layout_parameters(path)
-      layout = YAML.load_file("#{path}/definition.yml")
-      unless layout.nil?
-        layout_value = path[(path.rindex("/")+1)..-1]
-        parameters =[ layout_value, layout['name'], layout['parts'] ]
-      end
-      parameters
+  def refresh_subscription
+    current_user.watched_pages(true)
+    if request.xhr?
+      render :action => :refresh_subscription
+    else
+      redirect_to page_path(@page.path)
     end
-
-    def refresh_subscription
-      current_user.watched_pages(true)
-      if request.xhr?
-        render :action => :refresh_subscription
-      else
-        redirect_to page_path(@page.path)
-      end          
-    end
+  end
 end

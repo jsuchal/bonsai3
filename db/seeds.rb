@@ -5,5 +5,9 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
-Page.create(:title => "Home")
-User.create(:username => "admin", :name => "Admin")
+admin = User.create(:username => "admin", :name => "Admin")
+home_page = Page.create(:title => "Home")
+page_part = home_page.parts.create(:name => "body", :current_revision_id => 0)
+first_revision = page_part.revisions.create(:author => admin, :body => '', :number => 1)
+page_part.current_revision = first_revision
+page_part.save

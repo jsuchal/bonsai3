@@ -4,6 +4,8 @@ class PagePart < ActiveRecord::Base
   has_many :revisions, :class_name => 'PagePartRevision', :foreign_key => :part_id, :order => "id DESC"
   has_many :page_part_locks
 
+  attr_accessor :new_body
+
   define_index do
     indexes page.title
     indexes page.sid

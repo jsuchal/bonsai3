@@ -23,3 +23,13 @@ Feature: Wiki pages
     When I go to "the home page"
     And I follow "Edit"
     Then I should see "Title"
+
+  Scenario: User wants to add a new page part
+    Given I login as "johno"
+    When I go to "the home page"
+    And I follow "Edit"
+    And I fill in "new_part_name" with "Test part"
+    And I fill in "new_part_new_body" with "New part test body"
+    And I press "Update Page"
+    And I should see "Test part"
+    And I should see "New part test body"

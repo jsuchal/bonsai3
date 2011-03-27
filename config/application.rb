@@ -45,7 +45,7 @@ module Bonsai3
 
     config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do |rack,ebv|
       r301 %r{^([^\?]+[^/])([\?].*)?$}, "$1/", :if => Proc.new { |rack_env|
-        ((rack_env['REQUEST_METHOD'].downcase == 'get')&&(rack_env['QUERY_STRING']==""))
+        ((rack_env['REQUEST_METHOD'].downcase=='get')&&(rack_env['QUERY_STRING' ]==''))
       }
     end
 

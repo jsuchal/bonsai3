@@ -1,72 +1,78 @@
 <script type="text/javascript">
 
-    function ajax_add_lock(part_id){
-        $.get("/wiki/add_lock?part_id="+part_id, "", null, "script");
+    function ajax_add_lock(part_id) {
+        $.get("/wiki/add_lock?part_id=" + part_id, "", null, "script");
     }
 
-    function ajax_update_lock(part_id){
-        if(is_locked(part_id)){
-           $.get("/wiki/update_lock?part_id="+part_id, "", null, "script");
+    function ajax_update_lock(part_id) {
+        if (is_locked(part_id)) {
+            $.get("/wiki/update_lock?part_id=" + part_id, "", null, "script");
         }
     }
 
     var current_parts = new Array(<%= @page.parts.count %>);
     <%= "var saving_time = #{Bonsai.parallel_edit.saving_time}*2000"%>;
 
-    function lost_focus(){
+    function lost_focus() {
         $("#page_title").focus();
     }
 
-    function set_focus(part_id, part_name){
-        $("#parts_"+ part_id +"_"+part_name).focus();
+    function set_focus(part_id, part_name) {
+        $("#parts_" + part_id + "_" + part_name).focus();
     }
 
-    function show_confirm(is_edited_by_another, part_id, part_name){
-        if(!is_locked(part_id)){
-            if(is_edited_by_another){
+    function show_confirm(is_edited_by_another, part_id, part_name) {
+        if (!is_locked(part_id)) {
+            if (is_edited_by_another) {
                 lost_focus();
-                if(confirm('<%= t("js.parallel_edit.is_edited") %>')){
+                if (confirm('<%= t("js.parallel_edit.is_edited") %>')) {
                     add_lock(part_id);
                     set_focus(part_id, part_name);
-                } else{
+                } else {
                     lost_focus();
                     return false;
                 }
-            } else{
+            } else {
                 add_lock(part_id);
             }
         }
     }
 
-    function add_lock(part_id){
+    function add_lock(part_id) {
         current_parts.push(part_id);
     }
 
-    function is_locked(part_id){
-       return (current_parts.indexOf(part_id.toString()) != -1);
+    function is_locked(part_id) {
+        return (current_parts.indexOf(part_id.toString()) != -1);
     }
 </script>
 
 <div id="bonsai-main">
   <%= semantic_form_for [:wiki, @page] do |form| %>
       <%= form.input :title %>
-			<%= form.input :ordering, :as => :select, :collection => ordering_options_select_values, :include_blank => false %>
-			<%= form.select :layout, options_for_select(@user_layouts, @page.layout.to_s), :include_blank => false %>
-			<% @page.parts.each do |part| %>
-				<%= semantic_fields_for "parts[#{part.id}]", part do |f|%>
-		 			<%= f.input :name %>
-					<%= semantic_fields_for "parts[#{part.id}]", part.current_revision do |f|%>
-						<%= f.input :body,
-                                    :input_html => { :onclick => "ajax_add_lock(#{part.id})" }
-                        %>
-                        <%= f.input :current_revision_id, :value => part.current_revision.id, :as => :hidden %>
+      <%= form.input :ordering, :as => :select, :collection => ordering_options_select_values, :include_blank => false %>
+      <%= form.select :layout, options_for_select(@user_layouts, @page.layout.to_s), :include_blank => false %>
+      <% @page.parts.each do |part| %>
+          <%= semantic_fields_for "parts[#{part.id}]", part do |f| %>
+              <%= f.input :name %>
+              <%= semantic_fields_for "parts[#{part.id}]", part.current_revision do |f| %>
+                  <%= f.input :body,
+                              :input_html => {:onclick => "ajax_add_lock(#{part.id})"}
+                  %>
+                  <%= f.input :current_revision_id, :value => part.current_revision.id, :as => :hidden %>
 
-                        <script type="text/javascript">
-                            setInterval(function() { ajax_update_lock(<%= part.id %>); },saving_time);
-                        </script>
-					<% end %>
-				<% end %>
-			<% end %>
+                  <script type="text/javascript">
+                      setInterval(function() {
+                          ajax_update_lock(<%= part.id %>);
+                      }, saving_time);
+                  </script>
+              <% end %>
+          <% end %>
+      <% end %>
+      <%= semantic_fields_for "new_part", @new_part do |p| %>
+          <%= p.input :name %>
+          <%= p.text_area :new_body %>
+      <% end %>
       <%= form.buttons %>
   <% end %>
 
