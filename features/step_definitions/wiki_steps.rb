@@ -31,3 +31,7 @@ When /^I visit diff between revision (.*) and (.*) of "([^"]*)"$/ do |first, sec
   
   visit "#{diff_wiki_page_path(page)}/diff?revisions[]=#{second}&revisions[]=#{first}"
 end
+
+When /^I wait for (\d+) seconds?$/ do |secs|
+  sleep secs.to_i
+end
