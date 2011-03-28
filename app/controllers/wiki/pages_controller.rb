@@ -90,12 +90,17 @@ class Wiki::PagesController < ApplicationController
 
     new_page_part = @page.parts.new(params[:new_part])
     new_page_part.current_revision_id = 0
+      
+    if edited_page_parts.all?(&:valid?)
 
-    if (edited_page_parts.all?(&:valid?) and params[:new_part].empty?) or (edited_page_parts.all?(&:valid?) and new_page_part.valid?)
-      new_page_part.save
-      new_revision = new_page_part.revisions.create(:author => @current_user, :body => new_page_part.new_body, :number => 1)
-      new_page_part.current_revision = new_revision
-      new_page_part.save
+      if new_page_part.valid? and !(params[:new_part][:name].empty? and params[:new_part][:new_body].empty?)
+        new_page_part.save
+        new_revision = new_page_part.revisions.create(:author => @current_user, :body => new_page_part.new_body, :number => 1)
+        new_page_part.current_revision = new_revision
+        new_page_part.save
+        @num_of_new_revisions += 1
+      end
+
 
       @page.update_attributes(params[:page])
       edited_page_parts.all?(&:save)
