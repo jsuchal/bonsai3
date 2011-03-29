@@ -4,12 +4,16 @@ Feature: Wiki
   Should be able to see history of changes
 
   Background:
-    Given I am logged in
+      Given that a "test" page with multiple revisions exist
 
-    @wip
+  @wip
     Scenario: User wants to see the diff of two page revisions long version
-      When I create "/myDiffpage" page
-      And I add "first part" page part with text "text 1"
+      When I am logged in
+      And I create "/myDiffpage" page
       And I follow "History"
-      And I compare first two revisions
-      Then I should see "text 1" within ".addition"
+      Then I should see "Changed at"
+      When I check "check_all_revisions"
+      And I press "Compare selected"
+      Then I should not see "Changed at"
+      And I should see "Difference between revision #1"
+      And I should see "This is second revision"
