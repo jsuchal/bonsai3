@@ -5,6 +5,7 @@ class PagePart < ActiveRecord::Base
   has_many :page_part_locks
 
   attr_accessor :new_body
+  validates_presence_of :name
 
   define_index do
     indexes page.title

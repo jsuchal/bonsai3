@@ -3,13 +3,13 @@ class Page < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Page'
   has_many :files, :class_name => 'UploadedFile' do
     def create_from_upload_and_uploader(upload, uploader)
-      filename = upload['filename'].nil? ?  upload['file'].original_filename : upload['filename']
+      filename = upload['filename'].nil? ? upload['file'].original_filename : upload['filename']
 
       file = find_or_create_by_filename(File.basename(filename))
       file.current_version = file.versions.create(
-              :content_type => upload['file'].content_type,
-              :size => File.size(upload['file'].local_path),
-              :uploader => uploader
+          :content_type => upload['file'].content_type,
+          :size => File.size(upload['file'].local_path),
+          :uploader => uploader
       )
       FileUtils.mkdir_p(File.dirname(file.local_path))
       FileUtils.copy(upload['file'].local_path, file.local_path)
@@ -25,6 +25,17 @@ class Page < ActiveRecord::Base
 
   has_many :subscriptions
   has_many :subscribers, :through => :subscriptions, :source => :user
+
+  scope :viewable_page_revisions, lambda { |page, viewable_ids|
+    select("ppr.created_at, ppr.summary, ppr.number, u.name as author_full_name,
+            u.username as author_username, pages.id as pg_id, pages.title as pg_name,
+            pages.sid as pg_path, pp.name as pg_part_name").joins(
+            "JOIN page_parts pp ON pages.id = pp.page_id
+              JOIN page_part_revisions ppr on pp.id = ppr.part_id
+              JOIN users u on ppr.author_id = u.id").where(
+            ["pages.lft>=? AND pages.rgt <= ? and pages.id in (?)",
+             page.lft, page.rgt, viewable_ids]).order("ppr.id").limit(40)
+  }
 
   def resolve_part part_name
     inherited_part = (PagePartRevision.scoped.joins(:part => :page).where(:was_deleted => false).where("page_parts.current_revision_id = page_part_revisions.id") & self_and_ancestors & PagePart.scoped.where(:name => part_name)).reverse.first
@@ -91,12 +102,12 @@ class Page < ActiveRecord::Base
 
   def add_viewer group
     #if self.viewer_groups.empty?
-     # self.page_permissions.each do |permission|
-      #  if (permission.can_edit == true || permission.can_manage == true)
-       #   permission.can_view = true
-       # end
-        #permission.save
-      #end
+    # self.page_permissions.each do |permission|
+    #  if (permission.can_edit == true || permission.can_manage == true)
+    #   permission.can_view = true
+    # end
+    #permission.save
+    #end
     #end
     permission = PagePermission.find_or_initialize_by_page_id_and_group_id(:page_id => self.id, :group_id => group.id)
     permission.can_view = true

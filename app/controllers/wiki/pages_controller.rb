@@ -7,16 +7,8 @@ class Wiki::PagesController < ApplicationController
   end
 
   def rss_tree
-    ids = @current_user.viewable_page_ids
-    @revisions= Page.select("ppr.created_at, ppr.summary, ppr.number, u.name as author_full_name,
-                             u.username as author_username, pages.id as pg_id, pages.title as pg_name,
-                             pages.sid as pg_path, pp.name as pg_part_name").joins(
-        "JOIN page_parts pp ON pages.id = pp.page_id
-                              JOIN page_part_revisions ppr on pp.id = ppr.part_id
-                              JOIN users u on ppr.author_id = u.id").where(
-        ["pages.lft>=? AND pages.rgt <= ? and pages.id in (?)", @page.lft, @page.rgt, ids]).order("ppr.id")
+    @revisions = Page.viewable_page_revisions(@page, @current_user.viewable_page_ids)
   end
-
 
   def history
     @title = "History for #{@page.title}"
@@ -88,12 +80,11 @@ class Wiki::PagesController < ApplicationController
       edited_page_parts << page_part
     end
 
-    new_page_part = @page.parts.new(params[:new_part])
-    new_page_part.current_revision_id = 0
-      
+    new_page_part = @page.parts.new(params[:new_part].merge(:current_revision_id => 0))
+
     if edited_page_parts.all?(&:valid?)
 
-      if new_page_part.valid? and !(params[:new_part][:name].empty? and params[:new_part][:new_body].empty?)
+      if new_page_part.valid?
         new_page_part.save
         new_revision = new_page_part.revisions.create(:author => @current_user, :body => new_page_part.new_body, :number => 1)
         new_page_part.current_revision = new_revision
