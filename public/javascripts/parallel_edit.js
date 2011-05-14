@@ -41,3 +41,8 @@
     function is_locked(part_id) {
         return (current_parts.indexOf(part_id.toString()) != -1);
     }
+
+function toggleWMD(elementId) {
+    var element  = document.getElementById(elementId);
+    $(elementId).toggle();
+}

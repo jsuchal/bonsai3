@@ -1,13 +1,76 @@
 /* Defaults */
 body {
-  font-family: Calibri, sans-serif; }
+  font-family: Calibri, sans-serif;
+  background-color: white; }
+
+a img {
+  border: none; }
 
 #bonsai-main {
-  float: left; }
+  float: right;
+  padding: 0 0 20px;
+  margin: 0px;
+  width: 100%; }
+  #bonsai-main #inner-wrapper {
+    float: right;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 3px 3px; }
+    #bonsai-main #inner-wrapper .part-editor label {
+      display: none; }
+    #bonsai-main #inner-wrapper #page-settings, #bonsai-main #inner-wrapper #new-page-part {
+      display: none; }
+    #bonsai-main #inner-wrapper #show_wmd {
+      display: block; }
+    #bonsai-main #inner-wrapper li.page-part-edit {
+      width: 99%;
+      margin: 3px 0;
+      padding: 3px;
+      background-color: #FCFCFC;
+      border: 1px solid gainsboro;
+      position: relative; }
+      #bonsai-main #inner-wrapper li.page-part-edit li a.buttons {
+        vertical-align: middle;
+        position: absolute;
+        top: 50%;
+        margin-top: -8px; }
+      #bonsai-main #inner-wrapper li.page-part-edit li .edit {
+        right: 25px; }
+      #bonsai-main #inner-wrapper li.page-part-edit li .remove {
+        right: 5px; }
+      #bonsai-main #inner-wrapper li.page-part-edit input {
+        padding: 3px 3px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #404040;
+        height: 18px;
+        width: 50%; }
+    #bonsai-main #inner-wrapper .wmd {
+      margin-bottom: 0;
+      margin-top: 5px; }
+    #bonsai-main #inner-wrapper textarea {
+      width: 99%; }
+    #bonsai-main #inner-wrapper .header {
+      padding: 0px 33px 2px 33px;
+      margin: 0px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border: 1px solid whiteSmoke;
+      background-color: #DAEEFF;
+      height: 67px; }
+  #bonsai-main .main-content {
+    padding: 10px 33px 0 33px;
+    min-width: 400px;
+    margin-right: 350px;
+    border-right: 1px solid silver; }
+    #bonsai-main .main-content #page-settings {
+      /*display: none;*/ }
 
 #bonsai-sidebar {
   float: right;
-  width: 340px; }
+  width: 340px;
+  margin-top: 67px; }
 
 form.new_uploaded_file input[type="submit"] {
   position: absolute;

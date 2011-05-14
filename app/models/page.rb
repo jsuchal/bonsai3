@@ -26,6 +26,9 @@ class Page < ActiveRecord::Base
   has_many :subscriptions
   has_many :subscribers, :through => :subscriptions, :source => :user
 
+  validates_presence_of :title
+  attr_accessible :title, :layout, :ordering
+
   scope :viewable_page_revisions, lambda { |page, viewable_ids|
     select("ppr.created_at, ppr.summary, ppr.number, u.name as author_full_name,
             u.username as author_username, pages.id as pg_id, pages.title as pg_name,

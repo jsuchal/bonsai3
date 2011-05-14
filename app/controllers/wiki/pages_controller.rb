@@ -1,6 +1,7 @@
 class Wiki::PagesController < ApplicationController
   before_filter :find_page, :except => [:search, :quick_search, :add_lock, :update_lock]
-  before_filter :set_layouts, :only => [:edit] #TODO also for create page
+  before_filter :set_layouts, :only => [:edit, :update] #TODO also for create page
+  before_filter :load_files, :only => [:edit, :update]
 
   def rss
     @revisions = @page.revisions.includes(:part, :author)
@@ -23,7 +24,9 @@ class Wiki::PagesController < ApplicationController
 
   def create
     # TODO check permission
-    page = Page.new(:title => params[:page][:title], :parent_id => params[:page][:parent_id], :sid => params[:page][:sid])
+    page = Page.new(:title => params[:page][:title])
+    page.parent_id = params[:page][:parent_id]
+    page.sid = params[:page][:sid]
     unless (page.valid?)
       error_message = ""
       page.errors.each_full { |msg| error_message << msg }
@@ -55,7 +58,6 @@ class Wiki::PagesController < ApplicationController
 
   def edit
     # TODO paginate?
-    @files = @page.files.order("id DESC").limit(10)
     @new_part = PagePart.new
   end
 
@@ -80,20 +82,21 @@ class Wiki::PagesController < ApplicationController
       edited_page_parts << page_part
     end
 
-    new_page_part = @page.parts.new(params[:new_part].merge(:current_revision_id => 0))
+    @new_part = @page.parts.new(params[:new_part].merge(:current_revision_id => 0))
+    @page.attributes = params[:page]
 
-    if edited_page_parts.all?(&:valid?)
+    if edited_page_parts.all?(&:valid?) and @page.valid?
 
-      if new_page_part.valid?
-        new_page_part.save
-        new_revision = new_page_part.revisions.create(:author => @current_user, :body => new_page_part.new_body, :number => 1)
-        new_page_part.current_revision = new_revision
-        new_page_part.save
+      if @new_part.valid?
+        @new_part.save
+        new_revision = @new_part.revisions.create(:author => @current_user, :body => @new_part.new_body, :number => 1)
+        @new_part.current_revision = new_revision
+        @new_part.save
         @num_of_new_revisions += 1
       end
 
 
-      @page.update_attributes(params[:page])
+      @page.save
       edited_page_parts.all?(&:save)
 
       if @num_of_new_revisions > 0 then
@@ -221,5 +224,10 @@ class Wiki::PagesController < ApplicationController
     else
       redirect_to page_path(@page.path)
     end
+  end
+
+  private
+  def load_files
+    @files = @page.files.order("id DESC").limit(10)
   end
 end

@@ -1,0 +1,2 @@
+module Wiki::PagePartsHelper
+end
