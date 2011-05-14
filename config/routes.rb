@@ -73,7 +73,7 @@ Bonsai3::Application.routes.draw do
       collection do
         get :search, :quick_search
       end
-
+      resources :page_parts
       resources :files do
         member do
           get :history

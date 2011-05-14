@@ -2,6 +2,13 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  wiki:
+    pages:
+      edit:
+        delete_page_part: "Delete page part"
+        delete_page_part_confirmation: "Delete this page part?"
+        page_settings: "Page settings"
+        new_page_part: "Add new page part"
   nodes:
     create:
       title: "Page or file you are looking for does not exist"

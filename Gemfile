@@ -7,7 +7,7 @@ gem 'haml' # we want SCSS
 gem 'jquery-rails'
 gem 'diff-lcs'
 gem 'maruku'
-gem 'formtastic', '1.1.0'
+gem 'formtastic', '1.2.3'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'thinking-sphinx', '2.0.0.rc2', :require => 'thinking_sphinx'
 gem 'ruby-net-ldap'
