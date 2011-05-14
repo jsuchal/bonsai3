@@ -36,6 +36,9 @@ class Page < ActiveRecord::Base
             ["pages.lft>=? AND pages.rgt <= ? and pages.id in (?)",
              page.lft, page.rgt, viewable_ids]).order("ppr.id").limit(40)
   }
+  def ordered_page_parts
+    self.parts.order(self.get_ordering)
+  end
 
   def resolve_part part_name
     inherited_part = (PagePartRevision.scoped.joins(:part => :page).where(:was_deleted => false).where("page_parts.current_revision_id = page_part_revisions.id") & self_and_ancestors & PagePart.scoped.where(:name => part_name)).reverse.first
@@ -120,6 +123,16 @@ class Page < ActiveRecord::Base
     permission.can_edit = true unless self.editor_groups.empty?
     permission.can_manage = true
     permission.save!
+  end
+
+  def get_ordering
+    case self.ordering
+      when 0
+        "id"
+      when 1
+        "name"
+      else "id"
+    end
   end
 
 

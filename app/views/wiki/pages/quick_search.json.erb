@@ -3,7 +3,7 @@
             :label => match.page.title,
             :title => highlight(match.page.title, @phrases),
             :description => highlight(excerpt(match.current_revision.body_without_markup, @term, :radius => 40).to_s, @phrases), # TODO use excerpt_for (patch for options needed)
-            :path => highlight(page_path(match.page), @phrases),
-            :url => page_path(match.page)
+            :path => highlight(page_path(match.page.path), @phrases),
+            :url => page_path(match.page.path)
         }
 end.to_json.html_safe %>

@@ -58,12 +58,12 @@ Feature: Wiki layouting and many page parts
 
 @wip
   Scenario: User change ordering of page parts
-    When I create "/my" page
+    When I create "/test" page with title "Main page" body "" 
     And I add "Erika" page part with text "Erika"
     And I add "Anna" page part with text "Arabela"
-    And I should see "Some content. Erika Arabela"
+    And I should see "Body Erika Arabela"
     And I change ordering of page parts to "name"
-    Then I should see "Arabela Some content. Erika"
+    Then I should see "Arabela Body Erika"
 
 
 @wip  

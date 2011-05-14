@@ -1,50 +1,11 @@
+<%= javascript_include_tag "parallel_edit" %>
+<%= javascript_include_tag "wmd/wmd" %>
+<%= javascript_include_tag "wmd/showdown" %>
+<%= stylesheet_link_tag "wmd/wmd" %>
 <script type="text/javascript">
-
-    function ajax_add_lock(part_id) {
-        $.get("/wiki/add_lock?part_id=" + part_id, "", null, "script");
-    }
-
-    function ajax_update_lock(part_id) {
-        if (is_locked(part_id)) {
-            $.get("/wiki/update_lock?part_id=" + part_id, "", null, "script");
-        }
-    }
-
     var current_parts = new Array(<%= @page.parts.count %>);
-    <%= "var saving_time = #{Bonsai.parallel_edit.saving_time}*2000"%>;
-
-    function lost_focus() {
-        $("#page_title").focus();
-    }
-
-    function set_focus(part_id, part_name) {
-        $("#parts_" + part_id + "_" + part_name).focus();
-    }
-
-    function show_confirm(is_edited_by_another, part_id, part_name) {
-        if (!is_locked(part_id)) {
-            if (is_edited_by_another) {
-                lost_focus();
-                if (confirm('<%= t("js.parallel_edit.is_edited") %>')) {
-                    add_lock(part_id);
-                    set_focus(part_id, part_name);
-                } else {
-                    lost_focus();
-                    return false;
-                }
-            } else {
-                add_lock(part_id);
-            }
-        }
-    }
-
-    function add_lock(part_id) {
-        current_parts.push(part_id);
-    }
-
-    function is_locked(part_id) {
-        return (current_parts.indexOf(part_id.toString()) != -1);
-    }
+    var saving_time = <%= Bonsai.parallel_edit.saving_time*2000 -%>;
+    var notification_message = "<%= t("js.parallel_edit.is_edited") %>";
 </script>
 
 <div id="bonsai-main">
@@ -56,6 +17,7 @@
           <%= semantic_fields_for "parts[#{part.id}]", part do |f| %>
               <%= f.input :name %>
               <%= semantic_fields_for "parts[#{part.id}]", part.current_revision do |f| %>
+                  <div id="parts_<%= part.id -%>_body_wmd"></div>
                   <%= f.input :body,
                               :input_html => {:onclick => "ajax_add_lock(#{part.id})"}
                   %>
@@ -71,12 +33,13 @@
       <% end %>
       <%= semantic_fields_for "new_part", @new_part do |p| %>
           <%= p.input :name %>
+          <div id="new_part_new_body_wmd"></div>
           <%= p.text_area :new_body %>
       <% end %>
       <%= form.buttons %>
   <% end %>
-
 </div>
+
 <div id="bonsai-sidebar">
   <div id="files">
     <h2>Files</h2>
@@ -98,3 +61,12 @@
       </div>
   <% end %>
 </div>
+<script type="text/javascript">
+    var areas = $('textarea');
+    for (var i = 0; i < areas.length; i++) {
+        setup_wmd({
+            "input": areas[i].id,
+            "button_bar": areas[i].id + "_wmd"
+        });
+    }
+</script>

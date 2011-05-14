@@ -68,7 +68,7 @@ class Wiki::PagesController < ApplicationController
       page_part = @page.parts.find(part_id)
       page_part.name = part_value[:name]
 
-      newest_revisions = page_part.revisions.where(["part_id = ?", part_id]).first
+      newest_revisions = page_part.revisions.where(:part_id => part_id).first
       if (newest_revisions.id > part_value[:current_revision_id].to_i)
         @num_of_new_revisions += 1
       end

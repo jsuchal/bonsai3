@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Markdown syntax</title>
+</head>
+<body>
+
+<ul>
+    <li>Links
+        <ul>
+            <li>This is [an example](http://example.com/
+                "Title") Inline link
+            </li>
+            <li>See my [About](/about/) page for details</li>
+            <li>Automatic Links: &lt;http://example.com/&gt;</li>
+        </ul>
+    </li>
+    <li>
+        Image
+        <ul>
+            <li>
+                ![Alt text](/path/to/img.jpg)
+            </li>
+            <li>
+                ![Alt text](/path/to/img.jpg "Optional title")
+            </li>
+        </ul>
+    </li>
+    <li>Paragraphs --- simply one or more consecutive lines of text, separated by one or more blank lines</li>
+    <li>
+        Headings
+        <ul>
+            <li># This is an H1</li>
+            <li>## This is an H2</li>
+            <li>###### This is an H6</li>
+        </ul>
+    </li>
+    <li>
+        Preformatted text
+        <ul>
+            <li>bold --/**text--/**</li>
+            <li>italic -/*text-/*</li>
+        </ul>
+    </li>
+    <li>Lists
+        <ul>
+            <li>Use asterisks (*), pluses (+), and hyphens (-) as list markers:
+                <p>
+                    * itemA<br/>
+                    * itemB<br/>
+                    * itemC<br/>
+                </p>
+            </li>
+            <li>Ordered lists use numbers followed by periods:
+                <p>
+                    1. first item<br/>
+                    2. second item<br/>
+                    3. third item<br/>
+                </p>
+            </li>
+        </ul>
+    </li>
+    <li>
+        Code Blocks: --- indent every line of the block by at least 4 spaces or 1 tab<br/> and for syntax highlighting
+        add {:class=language} on next line
+    </li>
+</ul>
+</body>
+</html>
