@@ -163,3 +163,36 @@ ol.breadcrumbs {
     font-size: 10px; }
   .ui-autocomplete .description {
     font-size: 11px; }
+
+/* flash messages */
+#flash, #errorflash {
+   padding: 10px;
+   width: 95%;
+   margin:0 auto;
+   height:27px;
+   z-index:1;
+}
+
+#flash.notice {
+   color: #44b500;
+   background-color:#e7ffd8;
+}
+
+#flash.error, #errorflash {
+   color: #b21f14;
+   background-color: #ffc7c3;
+
+}
+
+#errorflashclose{
+   float:right;
+}
+
+#errorflash div{
+    height: 16px;
+    width: 16px;
+    float:right;
+    padding: 6px 4px 0 0;
+    margin:-10px -10px 10px 10px;
+}
+
