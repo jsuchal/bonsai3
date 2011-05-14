@@ -1,5 +1,5 @@
 <h1><%= @page.title %></h1>
-<% @page.parts.each do |part| -%>
+<% @page.ordered_page_parts.each do |part| -%>
     <h2><%= part.name %></h2>
     <div><%= markdown(part.current_revision.body) %></div>
 <% end -%>
