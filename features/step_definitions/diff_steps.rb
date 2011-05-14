@@ -1,4 +1,4 @@
-Given /^that a "(.*) page with multiple revisions exist$/ do |page|
+Given /^that a "(.*)" page with multiple revisions exist$/ do |page|
   user = User.create(:name => 'wikiuser', :username => 'wikiuser')
   page = Page.create!(:title => "test", :sid=> "test")
   
