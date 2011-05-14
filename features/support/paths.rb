@@ -14,8 +14,11 @@ module NavigationHelpers
     when /the test page/
       '/test'
 
+    when /the inherited page/
+      'test/inherited'
+
     when /the watched page/
-      '/watched'    
+      '/watched'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
