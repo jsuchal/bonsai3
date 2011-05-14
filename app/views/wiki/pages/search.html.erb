@@ -1,7 +1,7 @@
 <h1>Search results</h1>
 <% @matches.each do |match| -%>
     <h2><%= link_to highlight(match.page.title, @query), page_path(match.page) %></h2>
-    <%= render :partial => 'nodes/breadcrumbs', :object => match.page %>
+    <%= render :partial => 'shared/breadcrumbs', :object => match.page %>
     <p><%= highlight(@matches.excerpt_for(match.current_revision.body_without_markup), @query) %></p>
 <% end %>
 <%= will_paginate @matches %>
