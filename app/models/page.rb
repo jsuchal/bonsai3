@@ -8,11 +8,11 @@ class Page < ActiveRecord::Base
       file = find_or_create_by_filename(File.basename(filename))
       file.current_version = file.versions.create(
           :content_type => upload['file'].content_type,
-          :size => File.size(upload['file'].local_path),
+          :size => File.size(upload['file'].path),
           :uploader => uploader
       )
       FileUtils.mkdir_p(File.dirname(file.local_path))
-      FileUtils.copy(upload['file'].local_path, file.local_path)
+      FileUtils.copy(upload['file'].path, file.local_path)
       file.save
       file
     end

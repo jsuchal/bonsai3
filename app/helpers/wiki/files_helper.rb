@@ -29,7 +29,7 @@ module Wiki::FilesHelper
   end
 
   def file_path(file, options = {})
-    options.reverse_merge!({:controller => "/nodes", :action => :handle, :path => file.path})
+    options.reverse_merge!({:controller => "/nodes", :action => :handle, :path => file.path, :method => :get})
     url_for(options)
   end
 end
