@@ -51,7 +51,7 @@
           <% @page.parts.each_with_index do |part, index| %>
               <% unless part.current_revision.was_deleted? %>
                   <%= semantic_fields_for "parts[#{part.id}]", part do |f| %>
-                      <%= form.inputs :class => "part-editor" do %>
+                      <%= form.inputs :class => "part-editor", :id => "part-#{part.id}" do %>
                           <li class="page-part-edit">
                             <ol>
                               <%= f.input :name %>
