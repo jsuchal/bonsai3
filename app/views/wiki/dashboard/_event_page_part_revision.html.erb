@@ -1,2 +1,2 @@
 <% revision = event_page_part_revision %>
-<li><%= revision.author.full_name %> <strong><%= revision.was_deleted? ? "deleted" : "edited" %></strong> <%= link_to revision.part.page.title, page_path(revision.part.page) %> <%= time_ago_in_words(revision.created_at) %> ago.</li>
+<li><%= revision.author.full_name %> <strong><%= revision.was_deleted? ? "deleted" : "edited" %></strong> <%= link_to revision.part.page.title, page_path(revision.part.page.path) %> <%= time_ago_in_words(revision.created_at) %> ago.</li>
