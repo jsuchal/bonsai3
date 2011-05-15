@@ -26,7 +26,7 @@ group :cucumber do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'cucumber-rails'
-  gem 'cucumber'
+  gem 'cucumber', '~>0.10.2'
   gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
 end

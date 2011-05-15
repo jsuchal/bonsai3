@@ -44,7 +44,7 @@ class Page < ActiveRecord::Base
   end
 
   def resolve_part part_name
-    inherited_part = (PagePartRevision.scoped.joins(:part => :page).where(:was_deleted => false).where("page_parts.current_revision_id = page_part_revisions.id") & self_and_ancestors & PagePart.scoped.where(:name => part_name)).reverse.first
+    inherited_part = (PagePartRevision.scoped.joins(:part => :page).where(:was_deleted => false).where("page_parts.current_revision_id = page_part_revisions.id").merge(self_and_ancestors).merge(PagePart.scoped.where(:name => part_name)).reverse.first)
     inherited_part.try(:body)
   end
 
@@ -84,26 +84,26 @@ class Page < ActiveRecord::Base
 
   def is_viewable_by?(logged_user)
     return true if is_viewable_by_everyone?
-    (all_permissions_for_user(logged_user) & PagePermission.for_viewing).exists?
+    (all_permissions_for_user(logged_user).merge(PagePermission.for_viewing)).exists?
   end
 
   def is_viewable_by_everyone?
     # no explicit view permission exists
-    !(all_permissions & PagePermission.for_viewing!).exists?
+    !(all_permissions.merge(PagePermission.for_viewing!)).exists?
   end
 
   def is_editable_by?(logged_user)
     return true if is_editable_by_everyone?
-    (all_permissions_for_user(logged_user) & PagePermission.for_editing).exists?
+    (all_permissions_for_user(logged_user).merge(PagePermission.for_editing)).exists?
   end
 
   def is_editable_by_everyone?
     # no explicit view or edit permission exists
-    !(all_permissions & PagePermission.for_editing!).exists?
+    !(all_permissions.merge(PagePermission.for_editing!)).exists?
   end
 
   def is_manageable_by?(logged_user)
-    (all_permissions_for_user(logged_user) & PagePermission.for_managing).exists?
+    (all_permissions_for_user(logged_user).merge(PagePermission.for_managing)).exists?
   end
 
   def add_viewer group
@@ -141,7 +141,7 @@ class Page < ActiveRecord::Base
 
   private
   def all_permissions_for_user(logged_user)
-    self_and_ancestors.joins(:permissions => {:group => {:group_permissions => :user}}) & User.scoped.where(:id => logged_user.id)
+    self_and_ancestors.joins(:permissions => {:group => {:group_permissions => :user}}).merge(User.scoped.where(:id => logged_user.id))
   end
 
   def all_permissions
