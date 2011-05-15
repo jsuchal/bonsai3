@@ -1,9 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.0'
+gem 'rails', '3.0.7'
 
 gem 'mysql'
 gem 'haml' # we want SCSS
+gem 'sass'
 gem 'jquery-rails'
 gem 'diff-lcs'
 gem 'maruku'
