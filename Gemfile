@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.7'
+gem 'rake', '0.8.7'
 gem 'mysql2', "~> 0.2.0"
 gem 'sass'
 gem 'jquery-rails'
@@ -23,9 +24,9 @@ group :development, :test, :cucumber do
 end
 
 group :cucumber do
-  gem 'capybara'
+  gem 'capybara', '>= 1.0.0.beta1'
   gem 'database_cleaner'
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', '~>0.5.0'
   gem 'cucumber', '~>0.10.2'
   gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
