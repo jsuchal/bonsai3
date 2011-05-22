@@ -4,7 +4,10 @@
   if(existing.length) {
     existing.replaceWith(html);
   } else {
-    $("#files table").prepend(html);
+    if($("#files p#no_files").length)
+        $("#files p#no_files").replaceWith('<table><tbody>'+html+'</tbody></table>');
+    else
+        $("#files table").prepend(html);
   }
   $("#<%= dom_id(@file) %>").effect('highlight', {}, 5000);
 </textarea>

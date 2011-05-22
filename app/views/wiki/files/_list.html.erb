@@ -1,7 +1,6 @@
 <% if @files.empty? -%>
-  <p>No uploaded files.</p>
+  <p id="no_files">No uploaded files.</p>
 <% else -%>
-
 <table>
   <tbody>
   <%= render :partial => 'wiki/files/file', :collection => @files %>
