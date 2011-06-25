@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Defaults */
 body {
   font-family: Calibri, sans-serif;
@@ -16,7 +17,7 @@ a img {
     padding: 0;
     margin: 0;
     width: 100%;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 3px 3px; }
+    -webkit-box-shadow: rgba(0, 0, 0, 0.199) 0px 3px 3px; }
     #bonsai-main #inner-wrapper .part-editor label {
       display: none; }
     #bonsai-main #inner-wrapper #page-settings, #bonsai-main #inner-wrapper #new-page-part {
@@ -81,7 +82,7 @@ form.new_uploaded_file input[type="submit"] {
 
 /* Layout */
 #toolbar {
-  -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.199) 0px 1px 1px;
   background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#fcfcfc), to(#e8e8e8));
   background: -moz-linear-gradient(270deg, #fcfcfc, #ececec) repeat scroll 0 0 transparent;
   border-radius: 5px;
@@ -199,7 +200,7 @@ ol.breadcrumbs {
   border-collapse: collapse;
   border: 1px solid #ccc;
   border-bottom: none;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.299219) 0px 3px 5px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.299) 0px 3px 5px;
   background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#fcfcfc), to(#e8e8e8));
   border-radius: 5px;
   border: 1px solid whiteSmoke;
@@ -209,7 +210,7 @@ ol.breadcrumbs {
     margin: 0;
     padding: 0;
     list-style-type: none;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.199) 0px 1px 1px;
     background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#fcfcfc), to(#f4f4f4));
     border-bottom: 1px solid #ccc; }
     .ui-autocomplete li:last-child {
@@ -226,36 +227,3 @@ ol.breadcrumbs {
     font-size: 10px; }
   .ui-autocomplete .description {
     font-size: 11px; }
-
-/* flash messages */
-#flash, #errorflash {
-   padding: 10px;
-   width: 95%;
-   margin:0 auto;
-   height:27px;
-   z-index:1;
-}
-
-#flash.notice {
-   color: #44b500;
-   background-color:#e7ffd8;
-}
-
-#flash.error, #errorflash {
-   color: #b21f14;
-   background-color: #ffc7c3;
-
-}
-
-#errorflashclose{
-   float:right;
-}
-
-#errorflash div{
-    height: 16px;
-    width: 16px;
-    float:right;
-    padding: 6px 4px 0 0;
-    margin:-10px -10px 10px 10px;
-}
-

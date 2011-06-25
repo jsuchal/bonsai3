@@ -31,14 +31,14 @@ en:
       logout_successful: "Logout successful!"
       login_error: "Login failed. Invalid credentials."
     pages:
-    	update:
-    		successfull_update: "Page successfully updated."
-    		page_updated_with_new_revisions: "Page successfully updated, but other user made another revision during your editing."
-    		failed_update: "Page could not be saved!"
+      update:
+      successfull_update: "Page successfully updated."
+      page_updated_with_new_revisions: "Page successfully updated, but other user made another revision during your editing."
+      failed_update: "Page could not be saved!"
   js:
     parallel_edit:
       is_edited: "Page is currently edited by another user!"
   activerecord:
     attributes:
       page:
-        title: "Title"
+      title: "Title"
