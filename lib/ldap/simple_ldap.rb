@@ -25,8 +25,8 @@ class SimpleLDAP
   class Stub
     def self.authenticate(login, password, host = nil, port = nil, base = nil, attributes = ['cn'])
       return nil unless login == password
-      entry = Net::LDAP::Entry.new
-      entry.cn = login
+      entry = Net::LDAP::Entry.new()
+      entry["CN"] = login
       data = []
       data << entry
       data

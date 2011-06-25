@@ -14,6 +14,7 @@ gem 'ruby-net-ldap'
 gem 'settingslogic'
 gem 'kramdown'
 gem 'rack-rewrite', '~> 1.0.0'
+gem "escape_utils", '>=0.2.3'
 
 group :development, :test, :cucumber do
   gem 'mongrel', '>= 1.2.0.pre2'
